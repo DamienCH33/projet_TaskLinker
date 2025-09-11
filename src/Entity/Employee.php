@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EmployeeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EmployeeRepository::class)]
@@ -22,7 +24,7 @@ class Employee
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $password = null;
 
     #[ORM\Column(length: 100)]
@@ -31,6 +33,25 @@ class Employee
     #[ORM\Column]
     private ?\DateTime $startDate = null;
 
+    /**
+     * @var Collection<int, Project>
+     */
+    #[ORM\ManyToMany(targetEntity: Project::class)]
+    private Collection $projects;
+
+    /**
+     * @var Collection<int, Task>
+     */
+    #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'employee')]
+    private Collection $tasks;
+
+    public function __construct()
+    {
+        $this->projects = new ArrayCollection();
+        $this->tasks = new ArrayCollection();
+    }
+
+    // ID
     public function getId(): ?int
     {
         return $this->id;
@@ -39,10 +60,10 @@ class Employee
     public function setId(int $id): static
     {
         $this->id = $id;
-
         return $this;
     }
 
+    // Firstname 
     public function getFirstname(): ?string
     {
         return $this->firstname;
@@ -51,22 +72,22 @@ class Employee
     public function setFirstname(string $firstname): static
     {
         $this->firstname = $firstname;
-
         return $this;
     }
 
+    // Lastname
     public function getLastname(): ?string
     {
         return $this->lastname;
     }
 
-    public function setLastname(string $Lastname): static
+    public function setLastname(string $lastname): static
     {
-        $this->lastname = $Lastname;
-
+        $this->lastname = $lastname;
         return $this;
     }
 
+    // Email
     public function getEmail(): ?string
     {
         return $this->email;
@@ -75,22 +96,22 @@ class Employee
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
+    // Password
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(?string $password): static
     {
         $this->password = $password;
-
         return $this;
     }
 
+    // Status
     public function getStatus(): ?string
     {
         return $this->status;
@@ -99,10 +120,10 @@ class Employee
     public function setStatus(string $status): static
     {
         $this->status = $status;
-
         return $this;
     }
 
+    // Start Date
     public function getStartDate(): ?\DateTime
     {
         return $this->startDate;
@@ -111,7 +132,57 @@ class Employee
     public function setStartDate(\DateTime $startDate): static
     {
         $this->startDate = $startDate;
+        return $this;
+    }
 
+    // Projects
+    /**
+     * @return Collection<int, Project>
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
+    }
+
+    public function addProject(Project $project): static
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects->add($project);
+        }
+        return $this;
+    }
+
+    public function removeProject(Project $project): static
+    {
+        $this->projects->removeElement($project);
+        return $this;
+    }
+
+    // Tasks
+    /**
+     * @return Collection<int, Task>
+     */
+    public function getTasks(): Collection
+    {
+        return $this->tasks;
+    }
+
+    public function addTask(Task $task): static
+    {
+        if (!$this->tasks->contains($task)) {
+            $this->tasks->add($task);
+            $task->setEmployee($this);
+        }
+        return $this;
+    }
+
+    public function removeTask(Task $task): static
+    {
+        if ($this->tasks->removeElement($task)) {
+            if ($task->getEmployee() === $this) {
+                $task->setEmployee(null);
+            }
+        }
         return $this;
     }
 }
