@@ -26,8 +26,10 @@ class Task
     #[ORM\Column(length: 20)]
     private ?string $status = null;
 
-    #[ORM\ManyToOne(inversedBy: 'task')]
+    #[ORM\ManyToOne(inversedBy: 'tasks')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Employee $employee = null;
+
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     #[ORM\JoinColumn(nullable: false)]

@@ -2,17 +2,18 @@
 
 namespace App\Controller;
 
-use App\Repository\ProjectRepository;
+use App\Entity\Project;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Doctrine\ORM\EntityManagerInterface;
 
 final class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(ProjectRepository $ProjectRepository): Response
+    public function index(EntityManagerInterface $em): Response
     {
-        $projects = $ProjectRepository->findAll();
+        $projects = $em->getRepository(Project::class)->findAll();
 
         return $this->render('index.html.twig', [
             'projects' => $projects,

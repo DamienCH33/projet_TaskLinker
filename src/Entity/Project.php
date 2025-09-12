@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ProjectRepository::class)]
+#[ORM\Entity()]
 class Project
 {
     #[ORM\Id]
@@ -33,9 +33,16 @@ class Project
     #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'project')]
     private Collection $tasks;
 
+    /**
+     * @var Collection<int, Employee>
+     */
+    #[ORM\ManyToMany(targetEntity: Employee::class)]
+    private Collection $employees;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
+        $this->employees = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -119,11 +126,34 @@ class Project
     public function removeTask(Task $task): static
     {
         if ($this->tasks->removeElement($task)) {
-            // set the owning side to null (unless already changed)
             if ($task->getProject() === $this) {
                 $task->setProject(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Employee>
+     */
+    public function getEmployees(): Collection
+    {
+        return $this->employees;
+    }
+
+    public function addEmployee(Employee $employee): static
+    {
+        if (!$this->employees->contains($employee)) {
+            $this->employees->add($employee);
+        }
+
+        return $this;
+    }
+
+    public function removeEmployee(Employee $employee): static
+    {
+        $this->employees->removeElement($employee);
 
         return $this;
     }
