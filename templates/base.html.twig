@@ -1,9 +1,10 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
 		<title>
-			{% block title %}Liste des projets - TaskLinker{% endblock %}
+			{% block title %}Liste des projets - TaskLinker
+			{% endblock %}
 		</title>
 		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
 		{% block stylesheets %}
@@ -24,38 +25,41 @@
 					<img src="{{ asset('assets/images/logo.png') }}" alt="Logo TaskLinker"/>
 				</a>
 				<ul id="main-menu">
-					<li class="active">
+					<li class="{{ app.request.attributes.get('_route') == 'app_home' ? 'active' }}">
 						<a href="{{ path('app_home') }}">
-							<i class="fa-solid fa-list-check"></i> Projets
+							<i class="fa-solid fa-list-check"></i>
+							Projets
 						</a>
 					</li>
-					<li>
-						<a href="employes.html">
-							<i class="fa-regular fa-user"></i> Équipe
+					<li class="{{ app.request.attributes.get('_route') == 'app_team' ? 'active' }}">
+						<a href="{{ path('app_team') }}">
+							<i class="fa-regular fa-user"></i>
+							Équipe
 						</a>
 					</li>
 				</ul>
 			</nav>
 
 			{% block header %}
-         <main>
-				<header>
-					<div id="current-user"></div>
-					<div id="title-page">
-						<h1>Projets</h1>
-					</div>
-				</header>
+				<main>
+					<header>
+						<div id="current-user"></div>
+						<div id="title-page">
+							<h1>Projets</h1>
+						</div>
+					</header>
 
-            {% for type, messages in app.flashes %}
-				{% for message in messages %}
-					<div class="alert alert-{{ type }}">
-						{{ message }}
-					</div>
-				{% endfor %}
-			{% endfor %}
-			{% endblock %}
+					{% for type, messages in app.flashes %}
+						{% for message in messages %}
+							<div class="alert alert-{{ type }}">
+								{{ message }}
+							</div>
+						{% endfor %}
+					{% endfor %}
+				{% endblock %}
 
-			{% block body %}{% endblock %}
-		</div>
+				{% block body %}{% endblock %}
+			</div>
+		</body>
 	</body>
 </html>
