@@ -36,7 +36,7 @@ class Employee
     /**
      * @var Collection<int, Project>
      */
-    #[ORM\ManyToMany(targetEntity: Project::class)]
+    #[ORM\ManyToMany(mappedBy: 'employees', targetEntity: Project::class)]
     private Collection $projects;
 
     /**
@@ -148,16 +148,19 @@ class Employee
     {
         if (!$this->projects->contains($project)) {
             $this->projects->add($project);
+            $project->addEmployee($this);
         }
+
         return $this;
     }
-
     public function removeProject(Project $project): static
     {
-        $this->projects->removeElement($project);
+        if ($this->projects->removeElement($project)) {
+            $project->removeEmployee($this);
+        }
+
         return $this;
     }
-
     // Tasks
     /**
      * @return Collection<int, Task>

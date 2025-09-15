@@ -36,7 +36,7 @@ class Project
     /**
      * @var Collection<int, Employee>
      */
-    #[ORM\ManyToMany(targetEntity: Employee::class)]
+    #[ORM\ManyToMany(targetEntity: Employee::class, inversedBy: 'projects')]
     private Collection $employees;
 
     public function __construct()
@@ -146,6 +146,7 @@ class Project
     {
         if (!$this->employees->contains($employee)) {
             $this->employees->add($employee);
+            $employee->addProject($this);
         }
 
         return $this;
@@ -153,7 +154,9 @@ class Project
 
     public function removeEmployee(Employee $employee): static
     {
-        $this->employees->removeElement($employee);
+        if ($this->employees->removeElement($employee)) {
+            $employee->removeProject($this);
+        }
 
         return $this;
     }

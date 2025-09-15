@@ -11,7 +11,7 @@
             <h1>{{ project.title }}</h1>
             <div class="user-list">
             {% for user in users %}
-                <div class="avatar">{{ user.firstname[0] ~ user.lastname[0] }}</div>
+                <div class="avatar">{{ user.firstname|first ~ user.lastname|first }}</div>
             {% else %}
                 <div>Aucun employé assigné</div>
             {% endfor %}
