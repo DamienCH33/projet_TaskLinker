@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Employee;
+use App\Form\TeamEditType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\Func;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -40,5 +41,26 @@ final class TeamController extends AbstractController
 
         $this->addFlash('success', "Cet employé a bien été supprimé.");
         return $this->redirectToRoute('app_team');
+    }
+
+    #[Route(path: '/team/edit/{id}', name: 'app_edit_team', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    public function editTeamMember(Request $request, int $id, EntityManagerInterface $em): Response
+    {
+        $team = $em->getRepository(Employee::class)->find($id);
+        if (!$team) {
+            throw $this->createNotFoundException("Cet employé n'existe pas");
+        }
+
+        $form = $this->createForm(TeamEditType::class, $team);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+            $this->addFlash('success', "Votre modification a bien été prise en compte.");
+            return $this->redirectToRoute('app_team');
+        }
+        return $this->render('editTeam.html.twig', [
+            'form' => $form->createView(),
+            'employee' => $team,
+        ]);
     }
 }

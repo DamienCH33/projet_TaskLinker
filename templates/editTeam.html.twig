@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ employee.firstname }} {{ employee.lastname }} - TaskLinker
+{% endblock %}
+
+{% block header %}
+<main>
+    <header>
+        <div id="current-user"></div>
+        <div id="title-page">
+            <h1>{{ employee.firstname }} {{ employee.lastname }}</h1>
+        </div>
+    </header>
+{% endblock %}
+
+{% block body %}
+<div id="content">
+    <section id="add">
+        <a href="{{ path('app_team') }}">← Retour</a>
+
+        {{ form_start(form, {'attr': {'name': 'employe'}}) }}
+
+        <div>
+            <label for="{{ form.lastname.vars.id }}" class="required">Nom</label>
+            {{ form_widget(form.lastname, {'attr': {'id': form.lastname.vars.id, 'maxlength': 255, 'required': true}}) }}
+        </div>
+
+        <div>
+            <label for="{{ form.firstname.vars.id }}" class="required">Prénom</label>
+            {{ form_widget(form.firstname, {'attr': {'id': form.firstname.vars.id, 'maxlength': 255, 'required': true}}) }}
+        </div>
+
+        <div>
+            <label for="{{ form.email.vars.id }}" class="required">Email</label>
+            {{ form_widget(form.email, {'attr': {'id': form.email.vars.id, 'required': true}}) }}
+        </div>
+
+        <div class="form-flex">
+            <div>
+                <label for="{{ form.startDate.vars.id }}" class="required">Date d'entrée</label>
+                {{ form_widget(form.startDate, {'attr': {'id': form.startDate.vars.id, 'required': true}}) }}
+            </div>
+            <div>
+                <label for="{{ form.status.vars.id }}" class="required">Statut</label>
+                {{ form_widget(form.status, {'attr': {'id': form.status.vars.id, 'required': true}}) }}
+            </div>
+        </div>
+
+        <button class="button button-submit">Enregistrer</button>
+
+        {{ form_end(form) }}
+    </section>
+</div>
+{% endblock %}

@@ -39,7 +39,7 @@
 							</td>
 							<td>{{ employee.status }}</td>
 							<td>
-								<a class="button button-edit-team" href="employe.html">
+								<a class="button button-edit-team" href="{{path( 'app_edit_team', {id: employee.id}) }}">
 									Éditer
 								</a>
 								<a class="delete-team" href="{{path( 'app_delete_team', {id: employee.id}) }}">
