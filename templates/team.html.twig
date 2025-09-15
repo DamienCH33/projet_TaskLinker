@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Équipe
+{% block title %}Équipe - TaskLinker
 {% endblock %}
 
 {% block header %}
@@ -42,7 +42,7 @@
 								<a class="button button-edit-team" href="employe.html">
 									Éditer
 								</a>
-								<a class="delete-team" href="#">
+								<a class="delete-team" href="{{path( 'app_delete_team', {id: employee.id}) }}">
 									Supprimer
 								</a>
 							</td>
