@@ -44,18 +44,10 @@ final class TasksController extends AbstractController
     }
 
 
-    #[Route(
-        path: '/project/{projectId}/task/{taskId}/edit',
-        name: 'app_edit_task',
-        requirements: ['projectId' => '\d+', 'taskId' => '\d+'],
-        methods: ['GET', 'POST']
-    )]
-    public function editTask(
-        Request $request,
-        #[MapEntity(id: 'projectId')] Project $project,
-        #[MapEntity(id: 'taskId')] Task $task,
-        EntityManagerInterface $em
-    ): Response {
+    #[Route(path: '/project/{projectId}/task/{taskId}/edit', name: 'app_edit_task', requirements: ['projectId' => '\d+', 'taskId' => '\d+'],
+    methods: ['GET', 'POST'])]
+    public function editTask(Request $request,#[MapEntity(id: 'projectId')] Project $project,#[MapEntity(id: 'taskId')] Task $task,EntityManagerInterface $em): Response
+    {
         if (!$task) {
             throw $this->createNotFoundException("Cette tâche n'existe pas");
         }
@@ -75,4 +67,27 @@ final class TasksController extends AbstractController
             'task' => $task,
         ]);
     }
+    #[Route(
+    path: '/project/{projectId}/task/{taskId}/delete',name: 'app_delete_task', requirements: ['projectId' => '\d+', 'taskId' => '\d+'],
+    methods: ['POST'])]
+    public function deleteTask(
+        #[MapEntity(id: 'projectId')] Project $project,
+        #[MapEntity(id: 'taskId')] Task $task,
+        EntityManagerInterface $em
+    ): Response
+    {
+        if (!$task) {
+            $this->addFlash('danger', "Cette tâche n'existe pas.");
+            return $this->redirectToRoute('app_detail_project', ['id' => $project->getId()]);
+        }
+
+        $em->remove($task);
+        $em->flush();
+
+        $this->addFlash('success', "La tâche a bien été supprimée.");
+        return $this->redirectToRoute('app_detail_project', ['id' => $project->getId()]);
+    }
+
+
+
 }

@@ -54,7 +54,7 @@
 
 				{{ form_end(form) }}
 
-				<form action="#" method="post" class="delete-task">
+				<form action="{{ path('app_delete_task', {'projectId': project.id, 'taskId': task.id}) }}" method="post" class="delete-task">
 					<button type="submit" title="deleteTask">Supprimer la tâche</button>
 				</form>
 

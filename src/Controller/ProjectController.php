@@ -68,7 +68,7 @@ final class ProjectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
             $this->addFlash('success', "La modification de votre projet a bien été prise en compte.");
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_detail_project', ['id' => $project->getId()]);
         }
         return $this->render('editProject.html.twig', [
             'form' => $form->createView(),
