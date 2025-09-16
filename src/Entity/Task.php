@@ -8,8 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-// src/Entity/Task.php
-
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Task
 {
@@ -30,16 +28,19 @@ class Task
     #[ORM\Column(length: 20)]
     private ?string $status = null;
 
-    #[ORM\ManyToMany(targetEntity: Employee::class)]
-    private Collection $employees;
+    // Relation ManyToOne vers Employee
+    #[ORM\ManyToMany(targetEntity: Employee::class, inversedBy: 'tasks')]
+    #[ORM\JoinTable(name: 'task_employee')]
+    private ?Employee $employee = null;
 
+    // Relation ManyToOne vers Project
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Project $project = null;
 
     public function __construct()
     {
-        $this->employees = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -91,26 +92,19 @@ class Task
         return $this;
     }
 
-    /** @return Collection<int, Employee> */
-    public function getEmployees(): Collection
+    // Employee
+    public function getEmployee(): ?Employee
     {
-        return $this->employees;
+        return $this->employee;
     }
 
-    public function addEmployee(Employee $employee): static
+    public function setEmployee(?Employee $employee): static
     {
-        if (!$this->employees->contains($employee)) {
-            $this->employees->add($employee);
-        }
+        $this->employee = $employee;
         return $this;
     }
 
-    public function removeEmployee(Employee $employee): static
-    {
-        $this->employees->removeElement($employee);
-        return $this;
-    }
-
+    // Project
     public function getProject(): ?Project
     {
         return $this->project;

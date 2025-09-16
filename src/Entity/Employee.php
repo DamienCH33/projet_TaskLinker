@@ -42,7 +42,7 @@ class Employee
     /**
      * @var Collection<int, Task>
      */
-    #[ORM\OneToMany(mappedBy: 'employee', targetEntity: Task::class)]
+    #[ORM\ManyToMany(mappedBy: 'employees', targetEntity: Task::class)]
     private Collection $tasks;
 
     public function __construct()

@@ -2,36 +2,45 @@
 
 {% block title %}Accueil - TaskLinker
 {% endblock %}
-
-{% block body %}
-	<div id="content">
-		<div id="projects-container">
-			{% for project in projects %}
-				{% if not project.archived %}
-					<article class="card-project">
-						<a href="{{ path('app_detail_project', {id: project.id}) }}">
-							<h2>{{ project.title }}</h2>
-						</a>
-						<div class="card-project-icons">
-							<a href="{{ path('app_edit_project', {id: project.id}) }}">
-								<i class="fa-solid fa-pen"></i>
+{% block header %}
+	<main>
+		<header>
+			<div id="current-user"></div>
+			<div id="title-page">
+				<h1>Projets</h1>
+			</div>
+		</header>
+		{% endblock %}
+		{% block body %}
+		<div id="content">
+			<div id="projects-container">
+				{% for project in projects %}
+					{% if not project.archived %}
+						<article class="card-project">
+							<a href="{{ path('app_detail_project', {id: project.id}) }}">
+								<h2>{{ project.title }}</h2>
 							</a>
-							<form action="{{ path('app_archive_project', {id: project.id}) }}" method="post" style="display:inline">
-								<button type="submit" class="btn-archive" title="Archiver">
-									<i class="fa-solid fa-trash"></i>
-								</button>
-							</form>
-						</div>
-					</article>
-				{% endif %}
-			{% endfor %}
+							<div class="card-project-icons">
+								<a href="{{ path('app_edit_project', {id: project.id}) }}">
+									<i class="fa-solid fa-pen"></i>
+								</a>
+								<form action="{{ path('app_archive_project', {id: project.id}) }}" method="post" class="delete-task">
+									<button type="submit" class="btn-archive" title="Archiver">
+										<i class="fa-solid fa-trash"></i>
+									</button>
+								</form>
+							</div>
+						</article>
+					{% endif %}
+				{% endfor %}
 
-			<article class="card-project add">
-				<a href="{{path( 'app_add_project') }}">
-					<i class="fa-solid fa-circle-plus add-project-icon"></i>
-					<h2>Ajouter un projet</h2>
-				</a>
-			</article>
+				<article class="card-project add">
+					<a href="{{path( 'app_add_project') }}">
+						<i class="fa-solid fa-circle-plus add-project-icon"></i>
+						<h2>Ajouter un projet</h2>
+					</a>
+				</article>
+			</div>
 		</div>
-	</div>
-</main>{% endblock %}
+	</main>
+{% endblock %}
