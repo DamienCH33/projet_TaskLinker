@@ -3,10 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\TaskRepository;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Task
@@ -19,28 +19,28 @@ class Task
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column]
-    private ?\DateTime $deadline = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $deadline = null;
 
     #[ORM\Column(length: 20)]
     private ?string $status = null;
 
-    // Relation ManyToOne vers Employee
+    // ✅ ManyToMany vers Employee
     #[ORM\ManyToMany(targetEntity: Employee::class, inversedBy: 'tasks')]
     #[ORM\JoinTable(name: 'task_employee')]
-    private ?Employee $employee = null;
+    private Collection $employees;
 
-    // Relation ManyToOne vers Project
+    // ✅ ManyToOne vers Project
     #[ORM\ManyToOne(inversedBy: 'tasks')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Project $project = null;
 
     public function __construct()
     {
-
+        $this->employees = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -64,18 +64,18 @@ class Task
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
         return $this;
     }
 
-    public function getDeadline(): ?\DateTime
+    public function getDeadline(): ?\DateTimeInterface
     {
         return $this->deadline;
     }
 
-    public function setDeadline(\DateTime $deadline): static
+    public function setDeadline(\DateTimeInterface $deadline): static
     {
         $this->deadline = $deadline;
         return $this;
@@ -92,19 +92,6 @@ class Task
         return $this;
     }
 
-    // Employee
-    public function getEmployee(): ?Employee
-    {
-        return $this->employee;
-    }
-
-    public function setEmployee(?Employee $employee): static
-    {
-        $this->employee = $employee;
-        return $this;
-    }
-
-    // Project
     public function getProject(): ?Project
     {
         return $this->project;
@@ -113,6 +100,31 @@ class Task
     public function setProject(?Project $project): static
     {
         $this->project = $project;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Employee>
+     */
+    public function getEmployees(): Collection
+    {
+        return $this->employees;
+    }
+
+    public function addEmployee(Employee $employee): static
+    {
+        if (!$this->employees->contains($employee)) {
+            $this->employees->add($employee);
+            $employee->addTask($this);
+        }
+        return $this;
+    }
+
+    public function removeEmployee(Employee $employee): static
+    {
+        if ($this->employees->removeElement($employee)) {
+            $employee->removeTask($this);
+        }
         return $this;
     }
 }

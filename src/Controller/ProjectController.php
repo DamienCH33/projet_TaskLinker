@@ -76,7 +76,7 @@ final class ProjectController extends AbstractController
         ]);
     }
 
-    #[Route('/project/{id}/archive', name: 'app_archive_project', methods: ['POST'])]
+    #[Route('/project/{id}/archive', name: 'app_archive_project', methods: ['GET'])]
     public function archive(Project $project, EntityManagerInterface $em): Response
     {
         $project->setArchived(true);

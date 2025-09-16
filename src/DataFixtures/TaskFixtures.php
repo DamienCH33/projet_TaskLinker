@@ -59,8 +59,9 @@ class TaskFixtures extends Fixture implements DependentFixtureInterface
             $employee = $this->getReference('employee_' . $data['employee'], \App\Entity\Employee::class);
             $project  = $this->getReference('project_' . $data['project'], \App\Entity\Project::class);
 
-            $task->setEmployee($employee);
+            $task->addEmployee($employee);
             $task->setProject($project);
+            $project->addTask($task);
 
             $manager->persist($task);
 

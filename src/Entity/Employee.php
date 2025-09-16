@@ -174,18 +174,20 @@ class Employee
     {
         if (!$this->tasks->contains($task)) {
             $this->tasks->add($task);
-            $task->setEmployee($this);
+            if (!$task->getEmployees()->contains($this)) {
+                $task->addEmployee($this);
+            }
         }
         return $this;
     }
 
     public function removeTask(Task $task): static
-    {
-        if ($this->tasks->removeElement($task)) {
-            if ($task->getEmployee() === $this) {
-                $task->setEmployee(null);
-            }
+{
+    if ($this->tasks->removeElement($task)) {
+        if ($task->getEmployees()->contains($this)) {
+            $task->removeEmployee($this);
         }
-        return $this;
     }
+    return $this;
+}
 }

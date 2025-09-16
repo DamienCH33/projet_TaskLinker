@@ -16,33 +16,35 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 final class TasksController extends AbstractController
 {
     #[Route(path: '/project/{id}/task/add', name: 'app_add_task', methods: ['GET', 'POST'])]
-    public function addNewTask(Request $request, Project $project, EntityManagerInterface $em): Response
-    {
-        $newTask = new Task();
-        $newTask->setProject($project);
-
-        $form = $this->createForm(AddTaskType::class, $newTask);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            if ($newTask->getDeadline() === null) {
-                $newTask->setDeadline(new \DateTime());
-            }
-
-            $em->persist($newTask);
-            $em->flush();
-
-            $this->addFlash('success', "Tâche ajoutée avec succès.");
-            return $this->redirectToRoute('app_detail_project', ['id' => $newTask->getProject()->getId()]);
-        }
-
-        return $this->render('newTask.html.twig', [
-            'form' => $form->createView(),
-            'project' => $project,
-        ]);
+    public function addNewTask(Request $request, int $id, EntityManagerInterface $em): Response
+{
+    $project = $em->getRepository(Project::class)->find($id);
+    if (!$project) {
+        throw $this->createNotFoundException("Ce projet n'existe pas.");
     }
 
+    $newTask = new Task();
+    $newTask->setProject($project);
+
+    $form = $this->createForm(AddTaskType::class, $newTask);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        if (!$newTask->getDeadline()) {
+            $newTask->setDeadline(new \DateTimeImmutable());
+        }
+        $em->persist($newTask);
+        $em->flush();
+
+        $this->addFlash('success', "Tâche ajoutée avec succès.");
+        return $this->redirectToRoute('app_detail_project', ['id' => $project->getId()]);
+    }
+
+    return $this->render('newTask.html.twig', [
+        'form' => $form->createView(),
+        'project' => $project,
+    ]);
+}
 
     #[Route(path: '/project/{projectId}/task/{taskId}/edit', name: 'app_edit_task', requirements: ['projectId' => '\d+', 'taskId' => '\d+'],
     methods: ['GET', 'POST'])]
@@ -87,7 +89,4 @@ final class TasksController extends AbstractController
         $this->addFlash('success', "La tâche a bien été supprimée.");
         return $this->redirectToRoute('app_detail_project', ['id' => $project->getId()]);
     }
-
-
-
 }
