@@ -75,4 +75,14 @@ final class ProjectController extends AbstractController
             'project' => $project,
         ]);
     }
+
+    #[Route('/project/{id}/archive', name: 'app_archive_project', methods: ['POST'])]
+    public function archive(Project $project, EntityManagerInterface $em): Response
+    {
+        $project->setArchived(true);
+        $em->flush();
+
+        $this->addFlash('success', 'Le projet a été archivé avec succès.');
+        return $this->redirectToRoute('app_home');
+    }
 }

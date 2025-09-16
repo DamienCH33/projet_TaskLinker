@@ -151,7 +151,8 @@ div#projects-container {
     bottom: 7px;
     display: flex;
     gap: 7px;
-    z-index: 1;
+    z-index: 2;
+    align-items: center;
 }
 
 .card-project-icons i {
@@ -170,6 +171,42 @@ div#projects-container {
 
 .add-project-icon {
     margin-bottom: 5px;
+}
+
+.card-project-icons a,
+.card-project-icons form {
+    display: inline-flex;;           /* transforme le form en flex comme un lien */
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+    background: none;        /* supprime tout style par défaut du form */
+    border: none;
+}
+.card-project-icons form button.btn-archive {
+    all: unset;              /* supprime tous les styles par défaut du bouton */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+}
+
+.card-project-icons form button.btn-archive i {
+    font-size: 15px;
+}
+
+.card-project-icons form button.btn-archive:focus {
+    outline: none;
+    box-shadow: none;
+}
+.card-project-icons form {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
 }
 
 .flex-header {

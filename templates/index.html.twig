@@ -7,27 +7,31 @@
 	<div id="content">
 		<div id="projects-container">
 			{% for project in projects %}
-				<article class="card-project">
-					<a href="{{path( 'app_detail_project', {id: project.id}) }}">
-						<h2>{{ project.title }}</h2>
-					</a>
-					<div class="card-project-icons">
-						<a href="{{path( 'app_edit_project', {id: project.id}) }}">
-							<i class="fa-solid fa-pen"></i>
+				{% if not project.archived %}
+					<article class="card-project">
+						<a href="{{ path('app_detail_project', {id: project.id}) }}">
+							<h2>{{ project.title }}</h2>
 						</a>
-						<a href="#">
-							<i class="fa-solid fa-trash"></i>
-						</a>
-					</div>
-				</article>
-            {% endfor %}
+						<div class="card-project-icons">
+							<a href="{{ path('app_edit_project', {id: project.id}) }}">
+								<i class="fa-solid fa-pen"></i>
+							</a>
+							<form action="{{ path('app_archive_project', {id: project.id}) }}" method="post" style="display:inline">
+								<button type="submit" class="btn-archive" title="Archiver">
+									<i class="fa-solid fa-trash"></i>
+								</button>
+							</form>
+						</div>
+					</article>
+				{% endif %}
+			{% endfor %}
 
-				<article class="card-project add">
-					<a href="{{path( 'app_add_project') }}">
-						<i class="fa-solid fa-circle-plus add-project-icon"></i>
-						<h2>Ajouter un projet</h2>
-					</a>
-				</article>
+			<article class="card-project add">
+				<a href="{{path( 'app_add_project') }}">
+					<i class="fa-solid fa-circle-plus add-project-icon"></i>
+					<h2>Ajouter un projet</h2>
+				</a>
+			</article>
 		</div>
 	</div>
 </main>{% endblock %}

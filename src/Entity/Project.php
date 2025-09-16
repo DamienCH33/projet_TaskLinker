@@ -19,8 +19,8 @@ class Project
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column]
-    private ?bool $archived = false;
+    #[ORM\Column(type: 'boolean')]
+    private bool $archived = false;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $startDate = null;
@@ -71,7 +71,7 @@ class Project
         return $this;
     }
 
-    public function isArchived(): ?bool
+    public function isArchived(): bool
     {
         return $this->archived;
     }
@@ -95,12 +95,12 @@ class Project
         return $this;
     }
 
-    public function getEndDate(): ?\DateTimeImmutable
+    public function getEndDate(): ?\DateTimeInterface
     {
         return $this->endDate;
     }
 
-    public function setEndDate(\DateTimeImmutable $endDate): static
+    public function setEndDate(?\DateTimeInterface $endDate): static
     {
         $this->endDate = $endDate;
 
