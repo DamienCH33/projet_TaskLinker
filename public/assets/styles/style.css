@@ -175,17 +175,17 @@ div#projects-container {
 
 .card-project-icons a,
 .card-project-icons form {
-    display: inline-flex;;           /* transforme le form en flex comme un lien */
+    display: inline-flex;;         
     align-items: center;
     justify-content: center;
     padding: 0;
     margin: 0;
     line-height: 1;
-    background: none;        /* supprime tout style par défaut du form */
+    background: none;     
     border: none;
 }
 .card-project-icons form button.btn-archive {
-    all: unset;              /* supprime tous les styles par défaut du bouton */
+    all: unset;     
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -493,13 +493,13 @@ form ul {
 }
 
 form.delete-task button {
-    color: #E14343;      /* couleur du texte */
+    color: #E14343;    
     font-size: 14px;
     font-weight: 600;
     text-align: center;
-    background: none;    /* si tu veux enlever le background par défaut */
-    border: none;        /* si tu veux enlever la bordure par défaut */
-    cursor: pointer;     /* pour le pointeur */
+    background: none;   
+    border: none;       
+    cursor: pointer;   
     margin-top: 20px;
     margin-left: 80px;
     text-decoration: underline;
