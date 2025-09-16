@@ -6,6 +6,7 @@ use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity()]
 class Project
@@ -24,8 +25,8 @@ class Project
     #[ORM\Column]
     private ?\DateTimeImmutable $startDate = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $endDate = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $endDate = null;
 
     /**
      * @var Collection<int, Task>
@@ -43,6 +44,7 @@ class Project
     {
         $this->tasks = new ArrayCollection();
         $this->employees = new ArrayCollection();
+        $this->startDate = new \DateTimeImmutable();
     }
 
     public function getId(): ?int

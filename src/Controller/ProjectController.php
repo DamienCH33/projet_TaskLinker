@@ -13,20 +13,20 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class ProjectController extends AbstractController
 {
-    #[Route('/project/{id}',name:'app_detail_project', requirements: ['id' => '\d+'], methods:['GET'])]
+    #[Route('/project/{id}', name: 'app_detail_project', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function showDetailProject(int $id, EntityManagerInterface $em): Response
     {
         $project = $em->getRepository(Project::class)->find($id);
 
-        if(!$project){
+        if (!$project) {
             $this->addFlash('danger', "Ce projet n'existe pas.");
             return $this->redirectToRoute('app_home');
         }
 
         $users = $project->getEmployees();
 
-        return $this->render('projectDetails.html.twig',[
-            'project'=> $project,
+        return $this->render('projectDetails.html.twig', [
+            'project' => $project,
             'users' => $users,
         ]);
     }
@@ -37,11 +37,16 @@ final class ProjectController extends AbstractController
         $form = $this->createForm(ProjectType::class, $newProject);
 
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($newProject->getStartDate() === null) {
+                $newProject->setStartDate(new \DateTimeImmutable());
+            }
+
             $em->persist($newProject);
             $em->flush();
 
-            $this->addFlash('success', "Le projet a bien été créé.");
+            $this->addFlash('success', "Projet créé avec succès.");
             return $this->redirectToRoute('app_detail_project', ['id' => $newProject->getId()]);
         }
 
@@ -49,4 +54,7 @@ final class ProjectController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+
+    
 }
