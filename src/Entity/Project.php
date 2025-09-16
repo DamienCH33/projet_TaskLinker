@@ -31,9 +31,8 @@ class Project
     /**
      * @var Collection<int, Task>
      */
-    #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'project')]
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Task::class, cascade: ['persist', 'remove'])]
     private Collection $tasks;
-
     /**
      * @var Collection<int, Employee>
      */

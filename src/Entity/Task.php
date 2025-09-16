@@ -4,7 +4,11 @@ namespace App\Entity;
 
 use App\Repository\TaskRepository;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+
+// src/Entity/Task.php
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Task
@@ -26,25 +30,21 @@ class Task
     #[ORM\Column(length: 20)]
     private ?string $status = null;
 
-    #[ORM\ManyToOne(inversedBy: 'tasks')]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?Employee $employee = null;
-
+    #[ORM\ManyToMany(targetEntity: Employee::class)]
+    private Collection $employees;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Project $project = null;
 
+    public function __construct()
+    {
+        $this->employees = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function setId(int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     public function getTitle(): ?string
@@ -55,7 +55,6 @@ class Task
     public function setTitle(string $title): static
     {
         $this->title = $title;
-
         return $this;
     }
 
@@ -67,7 +66,6 @@ class Task
     public function setDescription(string $description): static
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -79,7 +77,6 @@ class Task
     public function setDeadline(\DateTime $deadline): static
     {
         $this->deadline = $deadline;
-
         return $this;
     }
 
@@ -91,19 +88,26 @@ class Task
     public function setStatus(string $status): static
     {
         $this->status = $status;
-
         return $this;
     }
 
-    public function getEmployee(): ?Employee
+    /** @return Collection<int, Employee> */
+    public function getEmployees(): Collection
     {
-        return $this->employee;
+        return $this->employees;
     }
 
-    public function setEmployee(?Employee $employee): static
+    public function addEmployee(Employee $employee): static
     {
-        $this->employee = $employee;
+        if (!$this->employees->contains($employee)) {
+            $this->employees->add($employee);
+        }
+        return $this;
+    }
 
+    public function removeEmployee(Employee $employee): static
+    {
+        $this->employees->removeElement($employee);
         return $this;
     }
 
@@ -115,7 +119,6 @@ class Task
     public function setProject(?Project $project): static
     {
         $this->project = $project;
-
         return $this;
     }
 }

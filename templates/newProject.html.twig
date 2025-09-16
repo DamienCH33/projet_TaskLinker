@@ -11,29 +11,45 @@
 				<h1>Nouveau projet</h1>
 			</div>
 		</header>
-{% endblock %}
+	{% endblock %}
 
 {% block body %}
-		<div id="content">
-			<section id="add">
-				<a href="{{ path('app_team') }}">← Retour</a>
+<div id="content">
+    <section id="add">
+        <a href="{{ path('app_team') }}">← Retour</a>
 
-				{{ form_start(form, {'attr': {'name': 'project'}}) }}
+        {{ form_start(form, {'attr': {'name': 'task'}}) }}
 
-				<div>
-					<label for="{{ form.title.vars.id }}" class="required">Titre du projet</label>
-					{{ form_widget(form.title, {'attr': {'id': form.title.vars.id, 'required': true}}) }}
-				</div>
+        <div>
+            <label for="{{ form.title.vars.id }}" class="required">Titre de la tâche</label>
+            {{ form_widget(form.title, {'attr': {'id': form.title.vars.id, 'required': true}}) }}
+        </div>
 
-				<div class="input">
-                    <label for="{{ form.employees.vars.id }}">Inviter des membres</label>
-                    {{ form_widget(form.employees) }}
-                </div>
-				<br>
+        <div>
+            <label for="{{ form.description.vars.id }}">Description</label>
+            {{ form_widget(form.description, {'attr': {'id': form.description.vars.id}}) }}
+        </div>
 
-				<button class="button button-submit">Continuer</button>
+        <div>
+            <label for="{{ form.deadline.vars.id }}">Date</label>
+            {{ form_widget(form.deadline, {'attr': {'id': form.deadline.vars.id}}) }}
+        </div>
 
-				{{ form_end(form) }}
-			</section>
-		</div>
+        <div>
+            <label for="{{ form.status.vars.id }}" class="required">Statut</label>
+            {{ form_widget(form.status, {'attr': {'id': form.status.vars.id, 'required': true}}) }}
+        </div>
+
+        <div class="input">
+            <label for="{{ form.employee.vars.id }}">Membre</label>
+            {{ form_widget(form.employee) }}
+        </div>
+
+        <br>
+        <button class="button button-submit">Ajouter</button>
+
+        {{ form_end(form) }}
+    </section>
+</div>
 {% endblock %}
+
