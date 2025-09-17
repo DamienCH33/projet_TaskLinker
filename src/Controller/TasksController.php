@@ -15,7 +15,15 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 
 final class TasksController extends AbstractController
 {
-    #[Route(path: '/project/{id}/task/add', name: 'app_add_task', methods: ['GET', 'POST'])]
+    #[Route(path: '/project/{id}/task/add', name: 'app_add_task', methods: ['GET', 'POST'])]    
+    /**
+     * addNewTask permet d'ajouter/créer une nouvelle tâche au projet
+     *
+     * @param  mixed $request
+     * @param  mixed $id
+     * @param  mixed $em
+     * @return Response
+     */
     public function addNewTask(Request $request, int $id, EntityManagerInterface $em): Response
 {
     $project = $em->getRepository(Project::class)->find($id);
@@ -47,7 +55,16 @@ final class TasksController extends AbstractController
 }
 
     #[Route(path: '/project/{projectId}/task/{taskId}/edit', name: 'app_edit_task', requirements: ['projectId' => '\d+', 'taskId' => '\d+'],
-    methods: ['GET', 'POST'])]
+    methods: ['GET', 'POST'])]    
+    /**
+     * editTask Permet de modifier les tâches d'un projet
+     *
+     * @param  mixed $request
+     * @param  mixed $project
+     * @param  mixed $task
+     * @param  mixed $em
+     * @return Response
+     */
     public function editTask(Request $request,#[MapEntity(id: 'projectId')] Project $project,#[MapEntity(id: 'taskId')] Task $task,EntityManagerInterface $em): Response
     {
         if (!$task) {
@@ -71,7 +88,12 @@ final class TasksController extends AbstractController
     }
     #[Route(
     path: '/project/{projectId}/task/{taskId}/delete',name: 'app_delete_task', requirements: ['projectId' => '\d+', 'taskId' => '\d+'],
-    methods: ['POST'])]
+    methods: ['POST'])]    
+    /**
+     * deleteTask Permet de supprimer une tâche d'un projet
+     *
+     * @return void
+     */
     public function deleteTask(
         #[MapEntity(id: 'projectId')] Project $project,
         #[MapEntity(id: 'taskId')] Task $task,

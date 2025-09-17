@@ -10,7 +10,13 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class HomeController extends AbstractController
 {
-    #[Route('/', name: 'app_home')]
+    #[Route('/', name: 'app_home')]    
+    /**
+     * index fonction affichant la homepage sur l'onglet project
+     *
+     * @param  mixed $em
+     * @return Response
+     */
     public function index(EntityManagerInterface $em): Response
     {
         $projects = $em->getRepository(Project::class)->findAll();

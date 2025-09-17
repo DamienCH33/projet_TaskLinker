@@ -12,7 +12,13 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class TeamController extends AbstractController
 {
-    #[Route('/team', name: 'app_team', methods: ['GET'])]
+    #[Route('/team', name: 'app_team', methods: ['GET'])]    
+    /**
+     * index Permet l'affichage de l'onglet équipe 
+     *
+     * @param  mixed $em
+     * @return Response
+     */
     public function index(EntityManagerInterface $em): Response
     {
 
@@ -23,7 +29,15 @@ final class TeamController extends AbstractController
         ]);
     }
 
-    #[Route('/team/{id}/delete', name: 'app_delete_team',  requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Route('/team/{id}/delete', name: 'app_delete_team',  requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]    
+    /**
+     * deleteTeamMember Permet la suppression d'un membre de l'équipe
+     *
+     * @param  mixed $request
+     * @param  mixed $id
+     * @param  mixed $em
+     * @return Response
+     */
     public function deleteTeamMember(Request $request, int $id, EntityManagerInterface $em): Response
     {
         $team = $em->getRepository(Employee::class)->find($id);
@@ -42,7 +56,15 @@ final class TeamController extends AbstractController
         return $this->redirectToRoute('app_team');
     }
 
-    #[Route(path: '/team/edit/{id}', name: 'app_edit_team', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Route(path: '/team/edit/{id}', name: 'app_edit_team', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]    
+    /**
+     * editTeamMember Permet la modification du profil du membre
+     *
+     * @param  mixed $request
+     * @param  mixed $id
+     * @param  mixed $em
+     * @return Response
+     */
     public function editTeamMember(Request $request, int $id, EntityManagerInterface $em): Response
     {
         $team = $em->getRepository(Employee::class)->find($id);

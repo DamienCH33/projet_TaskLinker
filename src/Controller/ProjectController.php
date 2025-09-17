@@ -15,7 +15,15 @@ use Symfony\Component\HttpFoundation\Request;
 final class ProjectController extends AbstractController
 {
     #[Route('/project/{id}', name: 'app_detail_project', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function showDetailProject(int $id, EntityManagerInterface $em): Response
+    
+    /**
+     * showDetailProject sert à montrer le contenue du projet selectionné
+     *
+     * @param  mixed $id
+     * @param  mixed $em
+     * @return Response
+     */
+    public function showDetailProject (int $id, EntityManagerInterface $em): Response
     {
         $project = $em->getRepository(Project::class)->find($id);
 
@@ -31,7 +39,15 @@ final class ProjectController extends AbstractController
             'users' => $users,
         ]);
     }
-    #[Route(path: '/project/add', name: 'app_add_project', methods: ['GET', 'POST'])]
+
+    #[Route(path: '/project/add', name: 'app_add_project', methods: ['GET', 'POST'])]    
+    /**
+     * addNewProject sert à ajouter/creer un nouveau projet
+     *
+     * @param  mixed $request
+     * @param  mixed $em
+     * @return Response
+     */
     public function addNewProject(Request $request, EntityManagerInterface $em): Response
     {
         $newProject = new Project();
@@ -55,7 +71,15 @@ final class ProjectController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-    #[Route(path: '/project/edit/{id}', name: 'app_edit_project', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Route(path: '/project/edit/{id}', name: 'app_edit_project', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]    
+    /**
+     * editProject sert à modifier un projet existant
+     *
+     * @param  mixed $request
+     * @param  mixed $id
+     * @param  mixed $em
+     * @return Response
+     */
     public function editProject(Request $request, int $id, EntityManagerInterface $em): Response
     {
         $project = $em->getRepository(Project::class)->find($id);
@@ -76,7 +100,14 @@ final class ProjectController extends AbstractController
         ]);
     }
 
-    #[Route('/project/{id}/archive', name: 'app_archive_project', methods: ['GET'])]
+    #[Route('/project/{id}/archive', name: 'app_archive_project', methods: ['GET'])]    
+    /**
+     * archive fonction qui sert à archiver un projet
+     *
+     * @param  mixed $project
+     * @param  mixed $em
+     * @return Response
+     */
     public function archive(Project $project, EntityManagerInterface $em): Response
     {
         $project->setArchived(true);
