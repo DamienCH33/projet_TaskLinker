@@ -1,39 +1,42 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nouveau projet - TaskLinker
-{% endblock %}
+{% block title %}Nouveau projet - TaskLinker{% endblock %}
 
 {% block header %}
-	<main>
-		<header>
-			<div id="current-user"></div>
-			<div id="title-page">
-				<h1>Nouveau projet</h1>
-			</div>
-		</header>
+<main>
+    <header>
+        <div id="current-user"></div>
+        <div id="title-page">
+            <h1>Nouveau projet</h1>
+        </div>
+    </header>
 {% endblock %}
 
 {% block body %}
-		<div id="content">
-			<section id="add">
-				<a href="{{ path('app_team') }}">← Retour</a>
+<div id="content">
+    <section id="add">
+        <a href="{{ path('app_home') }}">← Retour</a>
 
-				{{ form_start(form, {'attr': {'name': 'project'}}) }}
+        {{ form_start(form, {'attr': {'name': 'project'}}) }}
 
-				<div>
-					<label for="{{ form.title.vars.id }}" class="required">Titre du projet</label>
-					{{ form_widget(form.title, {'attr': {'id': form.title.vars.id, 'required': true}}) }}
-				</div>
+        <div>
+            <label for="{{ form.title.vars.id }}" class="required">Titre du projet</label>
+            {{ form_widget(form.title, {'attr': {'id': form.title.vars.id, 'required': true}}) }}
+            {# Affiche les erreurs du champ title #}
+            {{ form_errors(form.title) }}
+        </div>
 
-				<div class="input">
-                    <label for="{{ form.employees.vars.id }}">Inviter des membres</label>
-                    {{ form_widget(form.employees) }}
-                </div>
-				<br>
+        <div class="input">
+            <label for="{{ form.employees.vars.id }}">Inviter des membres</label>
+            {{ form_widget(form.employees) }}
+            {# Affiche les erreurs du champ employees #}
+            {{ form_errors(form.employees) }}
+        </div>
+        <br>
 
-				<button class="button button-submit">Continuer</button>
+        <button class="button button-submit">Continuer</button>
 
-				{{ form_end(form) }}
-			</section>
-		</div>
+        {{ form_end(form) }}
+    </section>
+</div>
 {% endblock %}
