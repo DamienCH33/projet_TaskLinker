@@ -4,41 +4,41 @@
 {% endblock %}
 {% block header %}
 
-		<header>
-			<div id="current-user"></div>
-			<div id="title-page">
-				<h1>Projets</h1>
-			</div>
-		</header>
-		{% endblock %}
-		{% block body %}
-		<div id="content">
-			<div id="projects-container">
-				{% for project in projects %}
-					{% if not project.archived %}
-						<article class="card-project">
-							<a href="{{ path('app_detail_project', {id: project.id}) }}">
-								<h2>{{ project.title }}</h2>
-							</a>
-							<div class="card-project-icons">
-								<a href="{{ path('app_edit_project', {id: project.id}) }}">
-									<i class="fa-solid fa-pen"></i>
-								</a>
-								<a href="{{ path('app_archive_project', {id: project.id}) }}">
-										<i class="fa-solid fa-trash"></i>				
-								</a>
-							</div>
-						</article>
-					{% endif %}
-				{% endfor %}
-
-				<article class="card-project add">
-					<a href="{{path( 'app_add_project') }}">
-						<i class="fa-solid fa-circle-plus add-project-icon"></i>
-						<h2>Ajouter un projet</h2>
-					</a>
-				</article>
-			</div>
+	<header>
+		<div id="current-user"></div>
+		<div id="title-page">
+			<h1>Projets</h1>
 		</div>
+	</header>
+{% endblock %}
+{% block body %}
+	<div id="content">
+		<div id="projects-container">
+			{% for project in projects %}
+				{% if not project.archived %}
+					<article class="card-project">
+						<a href="{{ path('app_detail_project', {id: project.id}) }}">
+							<h2>{{ project.title }}</h2>
+						</a>
+						<div class="card-project-icons">
+							<a href="{{ path('app_edit_project', {id: project.id}) }}">
+								<i class="fa-solid fa-pen"></i>
+							</a>
+							<a href="{{ path('app_archive_project', {id: project.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir archiver ce projet ?');">
+								<i class="fa-solid fa-trash"></i>
+							</a>
+						</div>
+					</article>
+				{% endif %}
+			{% endfor %}
+
+			<article class="card-project add">
+				<a href="{{path( 'app_add_project') }}">
+					<i class="fa-solid fa-circle-plus add-project-icon"></i>
+					<h2>Ajouter un projet</h2>
+				</a>
+			</article>
+		</div>
+	</div>
 
 {% endblock %}
