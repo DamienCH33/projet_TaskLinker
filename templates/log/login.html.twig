@@ -1,1 +1,22 @@
-{% extends 'base.html.twig' %}
+{% extends 'log/base-logout.html.twig' %}
+
+{% block body %}
+
+<h1>Se connecter</h1>
+
+    {% if error %}
+        <div class="error-login">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    <form action="{{ path('app_login') }}" method="post">
+        <label for="username">Email:</label>
+        <input type="text" id="email" name="email" value="{{ last_username }}" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button class="button button-submit">Se connecter</button>
+        <a href="{{ path('app_registration') }}" class="link-logout">Pas de compte ? S'inscrire</a>
+    </form>
+
+{% endblock %}
