@@ -13,19 +13,19 @@ class Task
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: 'id', type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name:'title',length: 255, type: Types::TEXT)]
     private ?string $title = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(name:'description', type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(name:'deadline',type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $deadline = null;
 
-    #[ORM\Column(length: 20)]
+    #[ORM\Column(name:'status', length: 20, type: Types::TEXT)]
     private ?string $status = null;
 
     // ✅ ManyToMany vers Employee
@@ -55,7 +55,7 @@ class Task
 
     public function setTitle(string $title): static
     {
-        $this->title = $title;
+        $this->title = ucfirst($title);
         return $this;
     }
 
@@ -66,7 +66,7 @@ class Task
 
     public function setDescription(?string $description): static
     {
-        $this->description = $description;
+        $this->description = ucfirst($description);
         return $this;
     }
 

@@ -19,30 +19,23 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180, unique:true)]
-    #[Assert\NotBlank]
+    #[ORM\Column(name:'email',length: 180, unique:true, type: Types::TEXT)]
     #[Assert\Email]
     private ?string $email = null;
 
-    
-
-    #[ORM\Column(length: 100, nullable: true)]
-    #[Assert\NotBlank]
+    #[ORM\Column(name:'firstname', length: 100, type: Types::TEXT)]
     private ?string $firstname = null;
 
-    #[ORM\Column(length: 100, nullable: true)]
-    #[Assert\NotBlank]
+    #[ORM\Column(name:'lastname', length: 100,type: Types::TEXT)]
     private ?string $lastname = null;
 
-    #[ORM\Column(length: 100, nullable: true)]
-    #[Assert\NotBlank]
+    #[ORM\Column(name:'status', length: 100,type: Types::TEXT)]
     private ?string $status = null;
 
-    #[ORM\Column(length:255, type: Types::DATE_MUTABLE, nullable: true)]
-    #[Assert\NotBlank]
+    #[ORM\Column(name:'start_date', length:255, type: Types::DATE_MUTABLE, )]
     private ?\DateTime $startDate = null;
     /**
      * @var list<string> The user roles
@@ -53,7 +46,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      */
-    #[ORM\Column]
+    #[ORM\Column(name:'password', type: Types::TEXT)]
     private ?string $password = null;
 
      #[ORM\ManyToMany(mappedBy: 'employees', targetEntity: Project::class)]
@@ -70,7 +63,6 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
         $this->projects = new ArrayCollection();
         $this->tasks = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {
@@ -96,7 +88,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setFirstname(string $firstname): static
     {
-        $this->firstname = $firstname;
+        $this->firstname = ucfirst($firstname);
         return $this;
     }
 
@@ -107,7 +99,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setLastname(string $lastname): static
     {
-        $this->lastname = $lastname;
+        $this->lastname = ucfirst($lastname);
         return $this;
     }   
 

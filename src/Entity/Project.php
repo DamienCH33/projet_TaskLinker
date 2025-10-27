@@ -14,19 +14,19 @@ class Project
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name:'id',type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name:'title',length: 255, type: Types::TEXT)]
     private ?string $title = null;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(name:'archived', type: Types::BOOLEAN)]
     private bool $archived = false;
 
-    #[ORM\Column]
+    #[ORM\Column(name:'start_date', type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $startDate = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(name:'end_date',type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $endDate = null;
 
     /**
@@ -66,7 +66,7 @@ class Project
 
     public function setTitle(string $title): static
     {
-        $this->title = $title;
+        $this->title = ucfirst($title);
 
         return $this;
     }

@@ -84,4 +84,9 @@ final class TeamController extends AbstractController
             'employee' => $team,
         ]);
     }
+
+    public function register()
+    {
+        
+    }
 }
