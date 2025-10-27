@@ -34,7 +34,7 @@ final class ProjectController extends AbstractController
 
         $users = $project->getEmployees();
 
-        return $this->render('projectDetails.html.twig', [
+        return $this->render('project/projectDetails.html.twig', [
             'project' => $project,
             'users' => $users,
         ]);
@@ -67,7 +67,7 @@ final class ProjectController extends AbstractController
             return $this->redirectToRoute('app_detail_project', ['id' => $newProject->getId()]);
         }
 
-        return $this->render('newProject.html.twig', [
+        return $this->render('project/newProject.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -94,7 +94,7 @@ final class ProjectController extends AbstractController
             $this->addFlash('success', "La modification de votre projet a bien été prise en compte.");
             return $this->redirectToRoute('app_detail_project', ['id' => $project->getId()]);
         }
-        return $this->render('editProject.html.twig', [
+        return $this->render('project/editProject.html.twig', [
             'form' => $form->createView(),
             'project' => $project,
         ]);

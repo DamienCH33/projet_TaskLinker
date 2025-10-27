@@ -48,7 +48,7 @@ final class TasksController extends AbstractController
         return $this->redirectToRoute('app_detail_project', ['id' => $project->getId()]);
     }
 
-    return $this->render('newTask.html.twig', [
+    return $this->render('task/newTask.html.twig', [
         'form' => $form->createView(),
         'project' => $project,
     ]);
@@ -80,7 +80,7 @@ final class TasksController extends AbstractController
             return $this->redirectToRoute('app_detail_project', ['id' => $project->getId()]);
         }
 
-        return $this->render('editTask.html.twig', [
+        return $this->render('task/editTask.html.twig', [
             'form' => $form->createView(),
             'project' => $project,
             'task' => $task,

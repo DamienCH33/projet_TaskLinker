@@ -3,40 +3,60 @@
 namespace App\Entity;
 
 use App\Repository\EmployeeRepository;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EmployeeRepository::class)]
-class Employee
+#[UniqueEntity('email')]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+class Employee implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 100)]
-    private ?string $firstname = null;
-
-    #[ORM\Column(length: 100)]
-    private ?string $lastname = null;
-
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 180, unique:true)]
+    #[Assert\NotBlank]
+    #[Assert\Email]
     private ?string $email = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $password = null;
+    
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\NotBlank]
+    private ?string $firstname = null;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\NotBlank]
+    private ?string $lastname = null;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\NotBlank]
     private ?string $status = null;
 
-    #[ORM\Column]
+    #[ORM\Column(length:255, type: Types::DATE_MUTABLE, nullable: true)]
+    #[Assert\NotBlank]
     private ?\DateTime $startDate = null;
+    /**
+     * @var list<string> The user roles
+     */
+    #[ORM\Column]
+    private array $roles = [];
 
     /**
-     * @var Collection<int, Project>
+     * @var string The hashed password
      */
-    #[ORM\ManyToMany(mappedBy: 'employees', targetEntity: Project::class)]
+    #[ORM\Column]
+    private ?string $password = null;
+
+     #[ORM\ManyToMany(mappedBy: 'employees', targetEntity: Project::class)]
     private Collection $projects;
 
     /**
@@ -51,19 +71,24 @@ class Employee
         $this->tasks = new ArrayCollection();
     }
 
-    // ID
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setId(int $id): static
+    public function getEmail(): ?string
     {
-        $this->id = $id;
-        return $this;
+        return $this->email;
     }
 
-    // Firstname 
+    public function setEmail(string $email): static
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+    
     public function getFirstname(): ?string
     {
         return $this->firstname;
@@ -75,7 +100,6 @@ class Employee
         return $this;
     }
 
-    // Lastname
     public function getLastname(): ?string
     {
         return $this->lastname;
@@ -85,33 +109,8 @@ class Employee
     {
         $this->lastname = $lastname;
         return $this;
-    }
+    }   
 
-    // Email
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): static
-    {
-        $this->email = $email;
-        return $this;
-    }
-
-    // Password
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(?string $password): static
-    {
-        $this->password = $password;
-        return $this;
-    }
-
-    // Status
     public function getStatus(): ?string
     {
         return $this->status;
@@ -122,9 +121,7 @@ class Employee
         $this->status = $status;
         return $this;
     }
-
-    // Start Date
-    public function getStartDate(): ?\DateTime
+     public function getStartDate(): ?\DateTime
     {
         return $this->startDate;
     }
@@ -134,8 +131,7 @@ class Employee
         $this->startDate = $startDate;
         return $this;
     }
-
-    // Projects
+        // Projects
     /**
      * @return Collection<int, Project>
      */
@@ -190,4 +186,67 @@ class Employee
     }
     return $this;
 }
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    /**
+     * @param list<string> $roles
+     */
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Ensure the session doesn't contain actual password hashes by CRC32C-hashing them, as supported since Symfony 7.3.
+     */
+    public function __serialize(): array
+    {
+        $data = (array) $this;
+        $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
+
+        return $data;
+    }
+
+    #[\Deprecated]
+    public function eraseCredentials(): void
+    {
+        // @deprecated, to be removed when upgrading to Symfony 8
+    }
 }

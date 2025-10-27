@@ -24,7 +24,7 @@ final class TeamController extends AbstractController
 
         $team = $em->getRepository(Employee::class)->findAll();
 
-        return $this->render('team.html.twig', [
+        return $this->render('team/team.html.twig', [
             'team' => $team,
         ]);
     }
@@ -79,7 +79,7 @@ final class TeamController extends AbstractController
             $this->addFlash('success', "Votre modification a bien été prise en compte.");
             return $this->redirectToRoute('app_team');
         }
-        return $this->render('editTeam.html.twig', [
+        return $this->render('team/editTeam.html.twig', [
             'form' => $form->createView(),
             'employee' => $team,
         ]);
