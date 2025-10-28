@@ -10,12 +10,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class ProjectController extends AbstractController
 {
     #[Route('/project/{id}', name: 'app_detail_project', requirements: ['id' => '\d+'], methods: ['GET'])]
-    
+    #[IsGranted('ROLE_USER')]
     /**
      * showDetailProject sert à montrer le contenue du projet selectionné
      *
@@ -31,7 +31,13 @@ final class ProjectController extends AbstractController
             $this->addFlash('danger', "Ce projet n'existe pas.");
             return $this->redirectToRoute('app_home');
         }
+        $users = $this->getUser();
 
+        if (!$this->isGranted('ROLE_ADMIN')) {
+        if (!$project->getEmployees()->contains($users = $this->getUser())) {
+            throw $this->createAccessDeniedException("Vous n'avez pas accès à ce projet.");
+        }
+        }
         $users = $project->getEmployees();
 
         return $this->render('project/projectDetails.html.twig', [
@@ -40,7 +46,8 @@ final class ProjectController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/project/add', name: 'app_add_project', methods: ['GET', 'POST'])]    
+    #[Route(path: '/project/add', name: 'app_add_project', methods: ['GET', 'POST'])]  
+    #[IsGranted('ROLE_ADMIN')]  
     /**
      * addNewProject sert à ajouter/creer un nouveau projet
      *
@@ -71,7 +78,8 @@ final class ProjectController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-    #[Route(path: '/project/edit/{id}', name: 'app_edit_project', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]    
+    #[Route(path: '/project/edit/{id}', name: 'app_edit_project', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]   
+    #[IsGranted('ROLE_ADMIN')] 
     /**
      * editProject sert à modifier un projet existant
      *
@@ -100,7 +108,8 @@ final class ProjectController extends AbstractController
         ]);
     }
 
-    #[Route('/project/{id}/archive', name: 'app_archive_project', methods: ['GET'])]    
+    #[Route('/project/{id}/archive', name: 'app_archive_project', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]    
     /**
      * archive fonction qui sert à archiver un projet
      *

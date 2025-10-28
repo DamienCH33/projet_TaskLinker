@@ -7,10 +7,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]    
+    #[IsGranted('ROLE_USER')]
     /**
      * index fonction affichant la homepage sur l'onglet project
      *
@@ -19,7 +21,20 @@ final class HomeController extends AbstractController
      */
     public function index(EntityManagerInterface $em): Response
     {
-        $projects = $em->getRepository(Project::class)->findAll();
+        $user = $this->getUser();
+
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $projects = $em->getRepository(Project::class)->findAll();
+        } else {
+            $projects = $em->getRepository(Project::class)
+                ->createQueryBuilder('p')
+                ->join('p.employees', 'e')
+                ->where('e = :user')
+                ->setParameter('user', $user)
+                ->getQuery()
+                ->getResult();
+        }
+
 
         return $this->render('index.html.twig', [
             'projects' => $projects,

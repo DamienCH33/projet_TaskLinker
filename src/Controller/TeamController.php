@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class TeamController extends AbstractController
 {
@@ -29,7 +30,8 @@ final class TeamController extends AbstractController
         ]);
     }
 
-    #[Route('/team/{id}/delete', name: 'app_delete_team',  requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]    
+    #[Route('/team/{id}/delete', name: 'app_delete_team',  requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]  
+    #[IsGranted('ROLE_ADMIN')]  
     /**
      * deleteTeamMember Permet la suppression d'un membre de l'équipe
      *
@@ -56,7 +58,8 @@ final class TeamController extends AbstractController
         return $this->redirectToRoute('app_team');
     }
 
-    #[Route(path: '/team/edit/{id}', name: 'app_edit_team', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]    
+    #[Route(path: '/team/edit/{id}', name: 'app_edit_team', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])] 
+    #[IsGranted('ROLE_ADMIN')]   
     /**
      * editTeamMember Permet la modification du profil du membre
      *
@@ -83,10 +86,5 @@ final class TeamController extends AbstractController
             'form' => $form->createView(),
             'employee' => $team,
         ]);
-    }
-
-    public function register()
-    {
-        
     }
 }

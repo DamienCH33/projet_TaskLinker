@@ -18,18 +18,23 @@
     <div id="main-container">
 
         <nav>
-            <a href="{{ path('app_projets') }}" id="logo">
+            <a href="{{ path('app_home') }}" id="logo">
                 <img src="{{ asset('assets/images/logo.png') }}" alt="Logo TaskLinker" />
             </a>
             <ul id="main-menu">
                 <li class="{% if not (app.request.get('_route') starts with 'app_employe') %}active{% endif %}">
-                    <a href="{{ path('app_projets') }}">
+                    <a href="{{ path('app_home') }}">
                         <i class="fa-solid fa-list-check"></i> Projets
                     </a>
                 </li>
                 <li class="{% if app.request.get('_route') starts with 'app_employe' %}active{% endif %}">
-                    <a href="{{ path('app_employes') }}">
+                    <a href="{{ path('app_team') }}">
                         <i class="fa-regular fa-user"></i> Équipe
+                    </a>
+                </li>
+                <li class="{% if app.request.get('_route') starts with 'app_employe' %}active{% endif %}">
+                    <a href="{{ path('app_welcome') }}">
+                        <i class="fa-regular fa-user"></i> S'incrire / Se connecter
                     </a>
                 </li>
             </ul>
@@ -40,7 +45,7 @@
                 <div id="current-user">
                     {% if app.user %}
                         <a href="{{ path('app_logout') }}" class="avatar">
-                            {{ app.user.prenom | first }}{{ app.user.nom | first }}
+                            {{ app.user.firstname | first }}{{ app.user.lastname| first }}
                         </a>
                     {% endif %}
                 </div>
@@ -59,19 +64,17 @@
                     {% endfor %}
                 {% endfor %}
 
-                {# Body Block #}
                 {% block body %}{% endblock %}
             </div>
         </main>
     </div>
 
-    {# --- JS --- #}
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    {% block javascripts %}
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
             crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="{{ asset('js/select.js') }}"></script>
-
-    {% block javascripts %}{% endblock %}
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+         <script src="{{ asset('js/select.js') }}"></script>
+    {% endblock %}
 </body>
 </html>

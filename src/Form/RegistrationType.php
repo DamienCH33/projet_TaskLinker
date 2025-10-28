@@ -40,6 +40,7 @@ class RegistrationType extends AbstractType
                 'label' => 'Mot de passe',
                 'type' => PasswordType::class,
                 'required' => true,
+                'mapped' => false,
                 'first_options'  => ['label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Confirmez le mot de passe'],
                 'constraints' => [new NotBlank([

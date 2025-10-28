@@ -4,13 +4,7 @@
 {% endblock %}
 
 {% block header %}
-
-	<header>
-		<div id="current-user"></div>
-		<div id="title-page">
 			<h1>Équipe</h1>
-		</div>
-	</header>
 {% endblock %}
 
 {% block body %}
@@ -20,6 +14,7 @@
 				<tr>
 					<th>Prénom, Nom</th>
 					<th>Statut</th>
+					<th>Rôle</th>
 					<th>Actions</th>
 				</tr>
 			</thead>
@@ -39,6 +34,7 @@
 							</div>
 						</td>
 						<td>{{ employee.status }}</td>
+						<td>{% if 'ROLE_ADMIN' in employee.roles ?? [] %}Chef de projet{% else %}Collaborateur{% endif %}</td>
 						<td>
 							<a class="button button-edit-team" href="{{path( 'app_edit_team', {id: employee.id}) }}">
 								Éditer

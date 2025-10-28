@@ -23,6 +23,14 @@ class TeamEditType extends AbstractType
                 'label' => 'Nom'
             ])
             ->add('email', EmailType::class,)
+            ->add('roles', ChoiceType::class, [
+                'choices' => [
+                    'Collaborateur' => 'ROLE_USER',
+                    'Chef de projet' => 'ROLE_ADMIN',
+                ],
+                'multiple' => true,
+                'label' => 'Rôle',
+            ])
             ->add('status', ChoiceType::class, [
                 'choices' => [
                     'CDI' => 'CDI',

@@ -14,10 +14,10 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 final class SecurityController extends AbstractController
 {
-    #[Route('/log', name: 'app_welcom', methods: ['GET'])]
+    #[Route('/welcome', name: 'app_welcome', methods: ['GET'])]
     public function welcom(): Response
     {
-        return $this->render('log/welcom.html.twig');
+        return $this->render('log/welcome.html.twig');
     }
 
     #[Route('/registration', name: 'app_registration', methods: ['GET', 'POST'])]
@@ -60,6 +60,7 @@ final class SecurityController extends AbstractController
             'last_username' => $lastUsername,
             'error' => $error,
         ]);
+        
     }
 
     #[Route('/logout', name: 'app_logout')]
