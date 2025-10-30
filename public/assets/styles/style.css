@@ -455,13 +455,19 @@ form ul {
     font-style: italic;
 }
 
-a.delete-task {
+form.delete-task button {
+    background: none;
+    border: none;
     color: #E14343;
     font-size: 14px;
     font-weight: 600;
     text-align: center;
     display: block;
-    margin-top: 20px;
+    margin: 20px auto 0;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: none;
+    transition: color 0.2s ease;
 }
 
 form .select2-container--default .select2-selection--multiple .select2-selection__choice {
@@ -645,6 +651,30 @@ div#current-user .avatar {
         border-radius: 0;
         padding: 13px;
     }
+}
+
+.btn-return {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 8px 16px;
+    background-color: #e0e0e0;
+    color: #333;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+.form-row {
+    display: flex;
+    gap: 20px; 
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.form-row .form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 /* --------- ALERTS --------- */

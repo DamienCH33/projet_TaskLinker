@@ -8,56 +8,54 @@
 {% endblock %}
 
 {% block header %}
+	<div id="title-page">
+		<h1>{{ task.title }}</h1>
+	</div>
+{% endblock %}
 
-		<header>
-			<div id="current-user"></div>
-			<div id="title-page">
-				<h1>{{ task.title }}</h1>
+{% block body %}
+	<div id="content">
+		<section id="add">
+			<a href="{{ path('app_detail_project', {id: project.id}) }}" class="btn-return">Retour</a>
+
+			{{ form_start(form, {'attr': {'name': 'task'}}) }}
+
+			<div>
+				<label for="{{ form.title.vars.id }}" class="required">Titre de la tâche</label>
+				{{ form_widget(form.title, {'attr': {'id': form.title.vars.id, 'required': true}}) }}
 			</div>
-		</header>
-	{% endblock %}
 
-	{% block body %}
-		<div id="content">
-			<section id="add">
-				<a href="{{ path('app_detail_project', {id: project.id}) }}">← Retour</a>
+			<div>
+				<label for="{{ form.description.vars.id }}" class="required">Description</label>
+				{{ form_widget(form.description, {'attr': {'id': form.description.vars.id, 'required': true}}) }}
+			</div>
 
-				{{ form_start(form, {'attr': {'name': 'task'}}) }}
-
-				<div>
-					<label for="{{ form.title.vars.id }}" class="required">Titre de la tâche</label>
-					{{ form_widget(form.title, {'attr': {'id': form.title.vars.id, 'required': true}}) }}
-				</div>
-
-				<div>
-					<label for="{{ form.description.vars.id }}" class="required">Description</label>
-					{{ form_widget(form.description, {'attr': {'id': form.description.vars.id, 'required': true}}) }}
-				</div>
-
-				<div>
+			<div class="form-row">
+				<div class="form-group">
 					<label for="{{ form.deadline.vars.id }}" class="required">Date</label>
 					{{ form_widget(form.deadline, {'attr': {'id': form.deadline.vars.id, 'required': true}}) }}
 				</div>
 
-				<div>
+				<div class="form-group">
 					<label for="{{ form.status.vars.id }}" class="required">Statut</label>
 					{{ form_widget(form.status, {'attr': {'id': form.status.vars.id, 'required': true}}) }}
 				</div>
+			</div>
 
-				<div class="input">
-					<label for="{{ form.employees.vars.id }}">Membres</label>
-					{{ form_widget(form.employees) }}
-				</div>
+			<div class="input">
+				<label for="{{ form.employees.vars.id }}">Membres</label>
+				{{ form_widget(form.employees) }}
+			</div>
 
-				<br>
-				<button class="button button-submit">Modifier</button>
+			<br>
+			<button class="button button-submit">Modifier</button>
 
-				{{ form_end(form) }}
+			{{ form_end(form) }}
 
-				<form action="{{ path('app_delete_task', {'projectId': project.id, 'taskId': task.id}) }}" method="post" class="delete-task">
-					<button type="submit" title="deleteTask">Supprimer la tâche</button>
-				</form>
+			<form action="{{ path('app_delete_task', {'projectId': project.id, 'taskId': task.id}) }}" method="post" class="delete-task" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?');">
+				<button type="submit" title="deleteTask">Supprimer la tâche</button>
+			</form>
 
-			</section>
-		</div>
-	{% endblock %}
+		</section>
+	</div>
+{% endblock %}

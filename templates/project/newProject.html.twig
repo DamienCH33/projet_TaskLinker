@@ -4,18 +4,17 @@
 
 {% block header %}
 <main>
-    <header>
-        <div id="current-user"></div>
-        <div id="title-page">
-            <h1>Nouveau projet</h1>
-        </div>
-    </header>
+    <div id="current-user">
+            <div id="title-page">
+                <h1>Nouveau projet</h1>
+            </div>
+    </div>
 {% endblock %}
 
 {% block body %}
 <div id="content">
     <section id="add">
-        <a href="{{ path('app_home') }}">← Retour</a>
+        <a href="{{ path('app_home') }}" class="btn-return"> Retour</a>
 
         {{ form_start(form, {'attr': {'name': 'project'}}) }}
 

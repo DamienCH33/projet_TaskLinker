@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block header %}
-	<header>
+<div id="current-user">
 		<div id="title-page" class="flex-header">
 			<h1>{{ project.title }}</h1>
 
@@ -21,13 +21,13 @@
 
 			<a class="button" href="{{ path('app_edit_project', {id: project.id}) }}">Modifier</a>
 		</div>
-	</header>
+</div>
 {% endblock %}
 
 {% block body %}
 	<div id="content">
 	
-	 <a href="{{ path('app_home') }}" class="back-link">← Retour</a>
+	 <a href="{{ path('app_home') }}" class="btn-return">Retour</a>
 			<div id="tasks-container">
 				{% set statuses = ['To Do', 'Doing', 'Done'] %}
 

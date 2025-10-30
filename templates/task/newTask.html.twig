@@ -4,18 +4,18 @@
 
 {% block header %}
 
-        <header>
-            <div id="current-user"></div>
+
+
             <div id="title-page">
                 <h1>Créer une tâche</h1>
             </div>
-        </header>
+
 {% endblock %}
 
 {% block body %}
     <div id="content">
         <section id="add">
-            <a href="{{ path('app_detail_project', {id: project.id}) }}">← Retour</a>
+            <a href="{{ path('app_detail_project', {id: project.id}) }}" class="btn-return">Retour</a>
 
             {{ form_start(form, {'attr': {'name': 'task'}}) }}
 

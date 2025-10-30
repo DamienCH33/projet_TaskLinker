@@ -20,7 +20,7 @@ final class SecurityController extends AbstractController
         return $this->render('log/welcome.html.twig');
     }
 
-    #[Route('/registration', name: 'app_registration', methods: ['GET', 'POST'])]
+    #[Route('/register', name: 'app_registration', methods: ['GET', 'POST'])]
     public function registration(Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $em): Response
     {
         $employee = new Employee();
@@ -42,7 +42,7 @@ final class SecurityController extends AbstractController
 
             $this->addFlash('success', 'Inscription réussie ! Vous pouvez maintenant vous connecter.');
 
-            return $this->redirectToRoute('app_welcom');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('log/register.html.twig', [
