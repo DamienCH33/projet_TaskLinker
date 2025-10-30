@@ -3,8 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Project;
-use App\Form\AddProjectType;
-use App\Form\ProjectEditType;
+use App\Form\ProjectType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -23,7 +22,7 @@ final class ProjectController extends AbstractController
      * @param  mixed $em
      * @return Response
      */
-    public function showDetailProject (int $id, EntityManagerInterface $em): Response
+    public function showDetailProject(int $id, EntityManagerInterface $em): Response
     {
         $project = $em->getRepository(Project::class)->find($id);
 
@@ -31,23 +30,21 @@ final class ProjectController extends AbstractController
             $this->addFlash('danger', "Ce projet n'existe pas.");
             return $this->redirectToRoute('app_home');
         }
-        $users = $this->getUser();
 
-        if (!$this->isGranted('ROLE_ADMIN')) {
-        if (!$project->getEmployees()->contains($users = $this->getUser())) {
+        $currentUser = $this->getUser();
+
+        if (!$this->isGranted('ROLE_ADMIN') && !$project->getEmployees()->contains($currentUser)) {
             throw $this->createAccessDeniedException("Vous n'avez pas accès à ce projet.");
         }
-        }
-        $users = $project->getEmployees();
 
         return $this->render('project/projectDetails.html.twig', [
             'project' => $project,
-            'users' => $users,
+            'users' => $project->getEmployees(),
         ]);
     }
 
-    #[Route(path: '/project/add', name: 'app_add_project', methods: ['GET', 'POST'])]  
-    #[IsGranted('ROLE_ADMIN')]  
+    #[Route(path: '/project/add', name: 'app_add_project', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     /**
      * addNewProject sert à ajouter/creer un nouveau projet
      *
@@ -58,7 +55,7 @@ final class ProjectController extends AbstractController
     public function addNewProject(Request $request, EntityManagerInterface $em): Response
     {
         $newProject = new Project();
-        $form = $this->createForm(AddProjectType::class, $newProject);
+        $form = $this->createForm(ProjectType::class, $newProject);
 
         $form->handleRequest($request);
 
@@ -78,8 +75,8 @@ final class ProjectController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-    #[Route(path: '/project/edit/{id}', name: 'app_edit_project', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]   
-    #[IsGranted('ROLE_ADMIN')] 
+    #[Route(path: '/project/edit/{id}', name: 'app_edit_project', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     /**
      * editProject sert à modifier un projet existant
      *
@@ -95,7 +92,7 @@ final class ProjectController extends AbstractController
             throw $this->createNotFoundException("Ce projet n'existe pas");
         }
 
-        $form = $this->createForm(ProjectEditType::class, $project);
+        $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
@@ -109,7 +106,7 @@ final class ProjectController extends AbstractController
     }
 
     #[Route('/project/{id}/archive', name: 'app_archive_project', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN')]    
+    #[IsGranted('ROLE_ADMIN')]
     /**
      * archive fonction qui sert à archiver un projet
      *

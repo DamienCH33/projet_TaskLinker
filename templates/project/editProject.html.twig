@@ -24,6 +24,7 @@
 				<div>
 					<label for="{{ form.title.vars.id }}" class="required">Titre du projet</label>
 					{{ form_widget(form.title, {'attr': {'id': form.title.vars.id, 'required': true}}) }}
+					{{ form_errors(form.title) }}
 				</div>
 
 				<div class="input">

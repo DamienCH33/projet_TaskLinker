@@ -14,19 +14,19 @@ class Project
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name:'id',type: Types::INTEGER)]
+    #[ORM\Column(name: 'id', type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\Column(name:'title',length: 255, type: Types::TEXT)]
+    #[ORM\Column(name: 'title', length: 255, type: Types::TEXT, nullable: true)]
     private ?string $title = null;
 
-    #[ORM\Column(name:'archived', type: Types::BOOLEAN)]
+    #[ORM\Column(name: 'archived', type: Types::BOOLEAN)]
     private bool $archived = false;
 
-    #[ORM\Column(name:'start_date', type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    #[ORM\Column(name: 'start_date', type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $startDate = null;
 
-    #[ORM\Column(name:'end_date',type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(name: 'end_date', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $endDate = null;
 
     /**
@@ -63,14 +63,11 @@ class Project
     {
         return $this->title;
     }
-
     public function setTitle(string $title): static
-    {
-        $this->title = ucfirst($title);
-
-        return $this;
-    }
-
+{
+    $this->title = ucfirst($title);
+    return $this;
+}
     public function isArchived(): bool
     {
         return $this->archived;
