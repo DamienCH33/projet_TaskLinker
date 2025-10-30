@@ -21,14 +21,12 @@
         <div>
             <label for="{{ form.title.vars.id }}" class="required">Titre du projet</label>
             {{ form_widget(form.title, {'attr': {'id': form.title.vars.id, 'required': true}}) }}
-            {# Affiche les erreurs du champ title #}
             {{ form_errors(form.title) }}
         </div>
 
         <div class="input">
             <label for="{{ form.employees.vars.id }}">Inviter des membres</label>
             {{ form_widget(form.employees) }}
-            {# Affiche les erreurs du champ employees #}
             {{ form_errors(form.employees) }}
         </div>
         <br>

@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ProjectType extends AbstractType
@@ -17,16 +18,14 @@ class ProjectType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-        'label' => 'Titre du projet',
-        'constraints' => [
-            new NotBlank([
-                'message' => 'Veuillez saisir un titre de projet',
+                'label' => 'Titre du projet',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir un titre de projet',
+                    ])
+                ],
+                'empty_data' => '',
             ])
-        ],
-        'empty_data' => '', // <- ça convertit null en chaîne vide
-    ])
-
-            
             ->add('employees', EntityType::class, [
                 'class' => Employee::class,
                 'choice_label' => function (Employee $e) {
@@ -35,8 +34,13 @@ class ProjectType extends AbstractType
                 'multiple' => true,
                 'expanded' => false,
                 'attr' => ['class' => 'select2'],
-            ])
-        ;
+                'constraints' => [
+                    new Count([
+                        'min' => 1,
+                        'minMessage' => 'Veuillez sélectionner au moins un membre',
+                    ]),
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
