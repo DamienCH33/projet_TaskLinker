@@ -23,29 +23,35 @@
         <div>
             <label for="{{ form.lastname.vars.id }}" class="required">Nom</label>
             {{ form_widget(form.lastname, {'attr': {'id': form.lastname.vars.id, 'maxlength': 255, 'required': true}}) }}
+            {{ form_errors(form.lastname) }}
         </div>
 
         <div>
             <label for="{{ form.firstname.vars.id }}" class="required">Prénom</label>
             {{ form_widget(form.firstname, {'attr': {'id': form.firstname.vars.id, 'maxlength': 255, 'required': true}}) }}
+            {{ form_errors(form.firstname) }}
         </div>
 
         <div>
             <label for="{{ form.email.vars.id }}" class="required">Email</label>
             {{ form_widget(form.email, {'attr': {'id': form.email.vars.id, 'required': true}}) }}
+            {{ form_errors(form.email) }}
         </div>
         <div>
             <label for="{{ form.roles.vars.id }}" class="required">Rôle</label>
-            {{ form_widget(form.roles, {'attr': {'id': form.roles.vars.id, 'required': true}}) }}    
+            {{ form_widget(form.roles, {'attr': {'id': form.roles.vars.id, 'required': true}}) }} 
+            {{ form_errors(form.roles) }}   
         </div>
         <div class="form-flex">
             <div>
                 <label for="{{ form.startDate.vars.id }}" class="required">Date d'entrée</label>
                 {{ form_widget(form.startDate, {'attr': {'id': form.startDate.vars.id, 'required': true}}) }}
+                {{ form_errors(form.startDate) }}
             </div>
             <div>
                 <label for="{{ form.status.vars.id }}" class="required">Statut</label>
                 {{ form_widget(form.status, {'attr': {'id': form.status.vars.id, 'required': true}}) }}
+                {{ form_errors(form.status) }}
             </div>
         </div>
 

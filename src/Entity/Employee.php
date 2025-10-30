@@ -22,20 +22,20 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\Column(name:'email',length: 180, unique:true, type: Types::TEXT)]
+    #[ORM\Column(name: 'email', length: 180, unique: true, type: Types::TEXT)]
     #[Assert\Email]
     private ?string $email = null;
 
-    #[ORM\Column(name:'firstname', length: 100, type: Types::TEXT)]
+    #[ORM\Column(name: 'firstname', length: 100, type: Types::TEXT)]
     private ?string $firstname = null;
 
-    #[ORM\Column(name:'lastname', length: 100,type: Types::TEXT)]
+    #[ORM\Column(name: 'lastname', length: 100, type: Types::TEXT)]
     private ?string $lastname = null;
 
-    #[ORM\Column(name:'status', length: 100,type: Types::TEXT)]
+    #[ORM\Column(name: 'status', length: 100, type: Types::TEXT)]
     private ?string $status = null;
 
-    #[ORM\Column(name:'start_date', length:255, type: Types::DATE_MUTABLE, )]
+    #[ORM\Column(name: 'start_date', length: 255, type: Types::DATE_MUTABLE,)]
     private ?\DateTime $startDate = null;
     /**
      * @var list<string> The user roles
@@ -46,10 +46,10 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      */
-    #[ORM\Column(name:'password', type: Types::TEXT)]
+    #[ORM\Column(name: 'password', type: Types::TEXT)]
     private ?string $password = null;
 
-     #[ORM\ManyToMany(mappedBy: 'employees', targetEntity: Project::class)]
+    #[ORM\ManyToMany(mappedBy: 'employees', targetEntity: Project::class)]
     private Collection $projects;
 
     /**
@@ -73,36 +73,29 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->email;
     }
-
-    public function setEmail(string $email): static
+    public function setEmail(?string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
-    
     public function getFirstname(): ?string
     {
         return $this->firstname;
     }
-
-    public function setFirstname(string $firstname): static
+    public function setFirstname(?string $firstname): static
     {
-        $this->firstname = ucfirst($firstname);
+        $this->firstname = $firstname ? ucfirst($firstname) : null;
         return $this;
     }
-
     public function getLastname(): ?string
     {
         return $this->lastname;
     }
-
-    public function setLastname(string $lastname): static
+    public function setLastname(?string $lastname): static
     {
-        $this->lastname = ucfirst($lastname);
+        $this->lastname = $lastname ? ucfirst($lastname) : null;
         return $this;
-    }   
-
+    }
     public function getStatus(): ?string
     {
         return $this->status;
@@ -113,17 +106,16 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
         $this->status = $status;
         return $this;
     }
-     public function getStartDate(): ?\DateTime
+    public function getStartDate(): ?\DateTime
     {
         return $this->startDate;
     }
-
-    public function setStartDate(\DateTime $startDate): static
+    public function setStartDate(?\DateTime $startDate): static
     {
         $this->startDate = $startDate;
         return $this;
     }
-        // Projects
+    // Projects
     /**
      * @return Collection<int, Project>
      */
@@ -170,14 +162,14 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function removeTask(Task $task): static
-{
-    if ($this->tasks->removeElement($task)) {
-        if ($task->getEmployees()->contains($this)) {
-            $task->removeEmployee($this);
+    {
+        if ($this->tasks->removeElement($task)) {
+            if ($task->getEmployees()->contains($this)) {
+                $task->removeEmployee($this);
+            }
         }
+        return $this;
     }
-    return $this;
-}
     /**
      * A visual identifier that represents this user.
      *
@@ -231,7 +223,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     public function __serialize(): array
     {
         $data = (array) $this;
-        $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
+        $data["\0" . self::class . "\0password"] = hash('crc32c', $this->password);
 
         return $data;
     }

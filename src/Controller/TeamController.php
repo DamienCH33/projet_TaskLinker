@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Employee;
-use App\Form\TeamEditType;
+use App\Form\TeamType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -75,7 +75,7 @@ final class TeamController extends AbstractController
             throw $this->createNotFoundException("Cet employé n'existe pas");
         }
 
-        $form = $this->createForm(TeamEditType::class, $team);
+        $form = $this->createForm(TeamType::class, $team);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
