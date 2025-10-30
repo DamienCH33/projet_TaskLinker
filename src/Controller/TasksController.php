@@ -4,8 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Entity\Task;
-use App\Form\AddTaskType;
-use App\Form\TaskEditType;
+use App\Form\TaskType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -34,7 +33,7 @@ final class TasksController extends AbstractController
     $newTask = new Task();
     $newTask->setProject($project);
 
-    $form = $this->createForm(AddTaskType::class, $newTask);
+    $form = $this->createForm(TaskType::class, $newTask);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
@@ -71,7 +70,7 @@ final class TasksController extends AbstractController
             throw $this->createNotFoundException("Cette tâche n'existe pas");
         }
 
-        $form = $this->createForm(TaskEditType::class, $task);
+        $form = $this->createForm(TaskType::class, $task);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

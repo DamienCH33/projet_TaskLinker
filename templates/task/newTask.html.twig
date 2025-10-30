@@ -22,26 +22,31 @@
             <div>
                 <label for="{{ form.title.vars.id }}" class="required">Titre de la tâche</label>
                 {{ form_widget(form.title, {'attr': {'id': form.title.vars.id, 'required': true}}) }}
+                {{ form_errors(form.title) }}
             </div>
 
             <div>
                 <label for="{{ form.description.vars.id }}" class="required">Description</label>
                 {{ form_widget(form.description, {'attr': {'id': form.description.vars.id, 'required': true}}) }}
+                {{ form_errors(form.description) }}
             </div>
 
             <div>
                 <label for="{{ form.deadline.vars.id }}" class="required">Date</label>
                 {{ form_widget(form.deadline, {'attr': {'id': form.deadline.vars.id, 'required': true}}) }}
+                {{ form_errors(form.deadline) }}
             </div>
 
             <div>
                 <label for="{{ form.status.vars.id }}" class="required">Statut</label>
                 {{ form_widget(form.status, {'attr': {'id': form.status.vars.id, 'required': true}}) }}
+                {{ form_errors(form.status) }}
             </div>
 
             <div class="input">
                 <label for="{{ form.employees.vars.id }}">Membres</label>
                 {{ form_widget(form.employees) }}
+                {{ form_errors(form.employees) }}
             </div>
 
             <br>
