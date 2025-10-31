@@ -23,18 +23,7 @@ final class HomeController extends AbstractController
     {
         $user = $this->getUser();
 
-        if ($this->isGranted('ROLE_ADMIN')) {
-            $projects = $em->getRepository(Project::class)->findAll();
-        } else {
-            $projects = $em->getRepository(Project::class)
-                ->createQueryBuilder('p')
-                ->join('p.employees', 'e')
-                ->where('e = :user')
-                ->setParameter('user', $user)
-                ->getQuery()
-                ->getResult();
-        }
-
+        $projects = $em->getRepository(Project::class)->findAccessibleProjects($user);
 
         return $this->render('index.html.twig', [
             'projects' => $projects,

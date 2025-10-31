@@ -9,6 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
+#[ORM\Table(name: "task")]
+#[ORM\UniqueConstraint(
+    name: "unique_task_per_project",
+    columns: ["project_id", "title"]
+)]
 class Task
 {
     #[ORM\Id]
@@ -16,7 +21,7 @@ class Task
     #[ORM\Column(name: 'id', type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\Column(name:'title',length: 255, type: Types::TEXT)]
+    #[ORM\Column(name:'title',length: 255, type: Types::STRING)]
     private ?string $title = null;
 
     #[ORM\Column(name:'description', type: Types::TEXT, nullable: true)]
@@ -28,13 +33,13 @@ class Task
     #[ORM\Column(name:'status', length: 20, type: Types::TEXT)]
     private ?string $status = null;
 
-    // ✅ ManyToMany vers Employee
+    // ManyToMany vers Employee
     #[ORM\ManyToMany(targetEntity: Employee::class, inversedBy: 'tasks')]
     #[ORM\JoinTable(name: 'task_employee')]
     private Collection $employees;
 
-    // ✅ ManyToOne vers Project
-    #[ORM\ManyToOne(inversedBy: 'tasks')]
+    // ManyToOne vers Project
+    #[ORM\ManyToOne(targetEntity: Project::class, inversedBy: "tasks")]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Project $project = null;
 

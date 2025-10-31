@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
+use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-#[ORM\Entity()]
+#[ORM\Entity(repositoryClass: ProjectRepository::class)]
 #[UniqueEntity('title', message: 'Un projet avec ce titre existe déjà.')]
 class Project
 {
@@ -17,7 +18,7 @@ class Project
     #[ORM\Column(name: 'id', type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\Column(name: 'title', length: 255, type: Types::TEXT, nullable: true)]
+    #[ORM\Column(name: 'title', length: 255, type: Types::STRING, nullable: true)]
     private ?string $title = null;
 
     #[ORM\Column(name: 'archived', type: Types::BOOLEAN)]

@@ -15,8 +15,11 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 final class SecurityController extends AbstractController
 {
     #[Route('/welcome', name: 'app_welcome', methods: ['GET'])]
-    public function welcom(): Response
+    public function welcome(): Response
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_home');
+        }
         return $this->render('log/welcome.html.twig');
     }
 
@@ -24,8 +27,6 @@ final class SecurityController extends AbstractController
     public function registration(Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $em): Response
     {
         $employee = new Employee();
-        $employee->setStatus('CDI')
-                ->setStartDate(new \DateTime());
 
         $form = $this->createForm(RegistrationType::class, $employee);
         $form->handleRequest($request);
@@ -36,6 +37,8 @@ final class SecurityController extends AbstractController
                 $form->get('password')->getData()
             );
             $employee->setPassword($hashedPassword);
+            $employee->setStatus('CDI')
+                ->setStartDate(new \DateTime());
 
             $em->persist($employee);
             $em->flush();
@@ -51,7 +54,7 @@ final class SecurityController extends AbstractController
     }
 
     #[Route('/login', name: 'app_login', methods: ['GET', 'POST'])]
-    public function login(AuthenticationUtils $authenticationUtils): Response 
+    public function login(AuthenticationUtils $authenticationUtils): Response
     {
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
@@ -60,13 +63,11 @@ final class SecurityController extends AbstractController
             'last_username' => $lastUsername,
             'error' => $error,
         ]);
-        
     }
 
     #[Route('/logout', name: 'app_logout')]
-public function logout(): void
-{
-    throw new \LogicException('This method is intercepted by the logout key on your firewall.');
-}
-
+    public function logout(): void
+    {
+        throw new \LogicException('This method is intercepted by the logout key on your firewall.');
+    }
 }

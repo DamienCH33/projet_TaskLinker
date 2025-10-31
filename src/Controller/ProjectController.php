@@ -31,11 +31,7 @@ final class ProjectController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        $currentUser = $this->getUser();
-
-        if (!$this->isGranted('ROLE_ADMIN') && !$project->getEmployees()->contains($currentUser)) {
-            throw $this->createAccessDeniedException("Vous n'avez pas accès à ce projet.");
-        }
+        $this->denyAccessUnlessGranted('PROJECT_VIEW', $project);
 
         return $this->render('project/projectDetails.html.twig', [
             'project' => $project,
@@ -56,7 +52,6 @@ final class ProjectController extends AbstractController
     {
         $newProject = new Project();
         $form = $this->createForm(ProjectType::class, $newProject);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -94,11 +89,13 @@ final class ProjectController extends AbstractController
 
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
             $this->addFlash('success', "La modification de votre projet a bien été prise en compte.");
             return $this->redirectToRoute('app_detail_project', ['id' => $project->getId()]);
         }
+        
         return $this->render('project/editProject.html.twig', [
             'form' => $form->createView(),
             'project' => $project,

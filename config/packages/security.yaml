@@ -24,7 +24,7 @@ security:
                 default_target_path: app_home
             logout:
                 path: app_logout
-                target: app_login 
+                target: app_welcome 
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -36,6 +36,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/welcome, roles: PUBLIC_ACCESS }
         - { path: ^/register, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: ROLE_USER }
 

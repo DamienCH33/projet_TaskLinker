@@ -1,38 +1,44 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil - TaskLinker
-{% endblock %}
+{% block title %}Accueil - TaskLinker{% endblock %}
+
 {% block header %}
-			<h1>Projets</h1>
+    <h1>Projets</h1>
 {% endblock %}
+
 {% block body %}
-	<div id="content">
-		<div id="projects-container">
-			{% for project in projects %}
-				{% if not project.archived %}
-					<article class="card-project">
-						<a href="{{ path('app_detail_project', {id: project.id}) }}">
-							<h2>{{ project.title }}</h2>
-						</a>
-						<div class="card-project-icons">
-							<a href="{{ path('app_edit_project', {id: project.id}) }}">
-								<i class="fa-solid fa-pen"></i>
-							</a>
-							<a href="{{ path('app_archive_project', {id: project.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir archiver ce projet ?');">
-								<i class="fa-solid fa-trash"></i>
-							</a>
-						</div>
-					</article>
-				{% endif %}
-			{% endfor %}
-
-			<article class="card-project add">
-				<a href="{{path( 'app_add_project') }}">
-					<i class="fa-solid fa-circle-plus add-project-icon"></i>
-					<h2>Ajouter un projet</h2>
-				</a>
-			</article>
-		</div>
-	</div>
-
+<div id="content">
+    <div id="projects-container">
+        {% for project in projects %}
+            {% if not project.archived %}
+                <article class="card-project">
+                    <a href="{{ path('app_detail_project', {id: project.id}) }}">
+                        <h2>{{ project.title }}</h2>
+                    </a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <div class="card-project-icons">
+                            <a href="{{ path('app_edit_project', {id: project.id}) }}">
+                                <i class="fa-solid fa-pen"></i>
+                            </a>
+                            <a href="{{ path('app_archive_project', {id: project.id}) }}" 
+                               onclick="return confirm('Êtes-vous sûr de vouloir archiver ce projet ?');">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
+                        </div>
+                    {% endif %}
+                </article>
+            {% endif %}
+        {% else %}
+            <p>Aucun projet disponible.</p>
+        {% endfor %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <article class="card-project add">
+                <a href="{{ path('app_add_project') }}">
+                    <i class="fa-solid fa-circle-plus add-project-icon"></i>
+                    <h2>Ajouter un projet</h2>
+                </a>
+            </article>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

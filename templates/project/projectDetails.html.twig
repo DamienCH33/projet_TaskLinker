@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block header %}
-<div id="current-user">
+	<div id="current-user">
 		<div id="title-page" class="flex-header">
 			<h1>{{ project.title }}</h1>
 
@@ -18,51 +18,54 @@
 					<div>Aucun employé assigné</div>
 				{% endfor %}
 			</div>
-
-			<a class="button" href="{{ path('app_edit_project', {id: project.id}) }}">Modifier</a>
+			{% if is_granted('ROLE_ADMIN') %}
+				<a class="button" href="{{ path('app_edit_project', {id: project.id}) }}">Modifier</a>
+			{% endif %}
 		</div>
-</div>
+	</div>
 {% endblock %}
 
 {% block body %}
 	<div id="content">
-	
-	 <a href="{{ path('app_home') }}" class="btn-return">Retour</a>
-			<div id="tasks-container">
-				{% set statuses = ['To Do', 'Doing', 'Done'] %}
 
-				{% for status in statuses %}
-					<div class="task-column">
-						<h2>{{ status }}</h2>
-						<div class="tasks-list">
-							{% for task in project.tasks %}
-								{% if task.status == status %}
-									<a class="task" href="{{ path('app_edit_task', { projectId: project.id, taskId: task.id }) }}">
-										<h3>{{ task.title }}</h3>
-										<p>{{ task.description }}</p>
-										<div class="task-infos">
-											<div class="task-deadline">
-												<i class="fa-regular fa-calendar"></i>
-												{{ task.deadline|date('d/m/Y') }}
-											</div>
+		<a href="{{ path('app_home') }}" class="btn-return">Retour</a>
+		<div id="tasks-container">
+			{% set statuses = ['To Do', 'Doing', 'Done'] %}
 
-											{% if task.employees is not empty %}
-												<div class="mini-users">
-													{% for emp in task.employees %}
-														<div class="mini-user">{{ emp.firstname|first ~ emp.lastname|first }}</div>
-													{% endfor %}
-												</div>
-											{% else %}
-												<div class="mini-user">-</div>
-											{% endif %}
+			{% for status in statuses %}
+				<div class="task-column">
+					<h2>{{ status }}</h2>
+					<div class="tasks-list">
+						{% for task in project.tasks %}
+							{% if task.status == status %}
+								<a class="task" href="{{ path('app_edit_task', { projectId: project.id, taskId: task.id }) }}">
+									<h3>{{ task.title }}</h3>
+									<p>{{ task.description }}</p>
+									<div class="task-infos">
+										<div class="task-deadline">
+											<i class="fa-regular fa-calendar"></i>
+											{{ task.deadline|date('d/m/Y') }}
 										</div>
-									</a>
-								{% endif %}
-							{% endfor %}
+
+										{% if task.employees is not empty %}
+											<div class="mini-users">
+												{% for emp in task.employees %}
+													<div class="mini-user">{{ emp.firstname|first ~ emp.lastname|first }}</div>
+												{% endfor %}
+											</div>
+										{% else %}
+											<div class="mini-user">-</div>
+										{% endif %}
+									</div>
+								</a>
+							{% endif %}
+						{% endfor %}
+						{% if is_granted('PROJECT_ADD_TASK', project) %}
 							<a href="{{ path('app_add_task', {id: project.id}) }}" class="task-add">+ Ajouter une tâche</a>
-						</div>
+						{% endif %}
 					</div>
-				{% endfor %}
-			</div>
-    </div>    
+				</div>
+			{% endfor %}
+		</div>
+	</div>
 {% endblock %}

@@ -22,17 +22,17 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\Column(name: 'email', length: 180, unique: true, type: Types::TEXT)]
+    #[ORM\Column(name: 'email', length: 180, unique: true, type: Types::STRING)]
     #[Assert\Email]
     private ?string $email = null;
 
-    #[ORM\Column(name: 'firstname', length: 100, type: Types::TEXT)]
+    #[ORM\Column(name: 'firstname', length: 100, type: Types::STRING)]
     private ?string $firstname = null;
 
-    #[ORM\Column(name: 'lastname', length: 100, type: Types::TEXT)]
+    #[ORM\Column(name: 'lastname', length: 100, type: Types::STRING)]
     private ?string $lastname = null;
 
-    #[ORM\Column(name: 'status', length: 100, type: Types::TEXT)]
+    #[ORM\Column(name: 'status', length: 100, type: Types::STRING)]
     private ?string $status = null;
 
     #[ORM\Column(name: 'start_date', length: 255, type: Types::DATE_MUTABLE,)]
@@ -46,7 +46,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      */
-    #[ORM\Column(name: 'password', type: Types::TEXT)]
+    #[ORM\Column(name: 'password', type: Types::STRING)]
     private ?string $password = null;
 
     #[ORM\ManyToMany(mappedBy: 'employees', targetEntity: Project::class)]

@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block header %}
-			<h1>Équipe</h1>
+	<h1>Équipe</h1>
 {% endblock %}
 
 {% block body %}
@@ -15,7 +15,7 @@
 					<th>Prénom, Nom</th>
 					<th>Statut</th>
 					<th>Rôle</th>
-					<th>Actions</th>
+					<th class="{% if not is_granted('ROLE_ADMIN') %}hidden-column{% endif %}">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -34,19 +34,30 @@
 							</div>
 						</td>
 						<td>{{ employee.status }}</td>
-						<td>{% if 'ROLE_ADMIN' in employee.roles ?? [] %}Chef de projet{% else %}Collaborateur{% endif %}</td>
 						<td>
-							<a class="button button-edit-team" href="{{path( 'app_edit_team', {id: employee.id}) }}">
-								Éditer
-							</a>
-							<a class="delete-team" href="{{ path('app_delete_team', {id: employee.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce membre ?');">
-								Supprimer
-							</a>
+							{% if 'ROLE_ADMIN' in employee.roles ?? [] %}
+								Chef de projet
+							{% else %}
+								Collaborateur
+							{% endif %}
+						</td>
+						<td class="admin-column">
+							{% if is_granted('ROLE_ADMIN') %}
+								<a class="button button-edit-team" href="{{ path('app_edit_team', {id: employee.id}) }}">
+									Éditer
+								</a>
+								<a class="delete-team" href="{{ path('app_delete_team', {id: employee.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce membre ?');">
+									Supprimer
+								</a>
+							{% else %}
+								&nbsp;
+								{# garde la cellule vide mais visible #}
+							{% endif %}
 						</td>
 					</tr>
 				{% else %}
 					<tr>
-						<td>Aucun employé trouvé</td>
+						<td colspan="4">Aucun employé trouvé</td>
 					</tr>
 				{% endfor %}
 			</tbody>
