@@ -14,65 +14,63 @@
 		<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 		<script src="{{ asset('assets/app.js') }}"></script>
-		</head>
-		<body>
-			<div id="main-container">
+	</head>
+	<body>
+		<div id="main-container">
 
-				<nav>
-					<a href="{{ path('app_home') }}" id="logo">
-						<img src="{{ asset('assets/images/logo.png') }}" alt="Logo TaskLinker"/>
-					</a>
-					<ul id="main-menu">
-						{% set route = app.request.get('_route') %}
+			<nav>
+				<a href="{{ path('app_home') }}" id="logo">
+					<img src="{{ asset('assets/images/logo.png') }}" alt="Logo TaskLinker"/>
+				</a>
+				<ul id="main-menu">
+					{% set route = app.request.get('_route') %}
 
-						<li class="{{ route == 'app_home' ? 'active' : '' }}">
-							<a href="{{ path('app_home') }}">
-								<i class="fa-solid fa-list-check"></i>
-								Projets
+					<li class="{{ route == 'app_home' ? 'active' : '' }}">
+						<a href="{{ path('app_home') }}">
+							<i class="fa-solid fa-list-check"></i>
+							Projets
+						</a>
+					</li>
+
+					<li class="{{ route starts with 'app_team' ? 'active' : '' }}">
+						<a href="{{ path('app_team') }}">
+							<i class="fa-regular fa-user"></i>
+							Équipe
+						</a>
+					</li>
+
+				</ul>
+			</nav>
+
+			<main>
+				<header>
+					<div id="current-user">
+						{% if app.user %}
+							<a href="{{ path('app_logout') }}" class="avatar">
+								{{ app.user.firstname | first }}{{ app.user.lastname| first }}
 							</a>
-						</li>
-
-						<li class="{{ route starts with 'app_team' ? 'active' : '' }}">
-							<a href="{{ path('app_team') }}">
-								<i class="fa-regular fa-user"></i>
-								Équipe
-							</a>
-						</li>
-
-					</ul>
-				</nav>
-
-				<main>
-					<header>
-						<div id="current-user">
-							{% if app.user %}
-								<a href="{{ path('app_logout') }}" class="avatar">
-									{{ app.user.firstname | first }}{{ app.user.lastname| first }}
-								</a>
-							{% endif %}
+						{% endif %}
+					</div>
+					<div id="title-page"> {% block header %}{% endblock %}
 						</div>
-						<div id="title-page"> {% block header %}{% endblock %}
-							</div>
-						</header>
+					</header>
 
-						<div
-							id="content">
-							{# Flash Messages #}
-							{% for type, messages in app.flashes %}
-								{% for message in messages %}
-									<div class="alert alert-{{ type }}">
-										{{ message }}
-									</div>
-								{% endfor %}
+					<div
+						id="content">
+						{# Flash Messages #}
+						{% for type, messages in app.flashes %}
+							{% for message in messages %}
+								<div class="alert alert-{{ type }}">
+									{{ message }}
+								</div>
 							{% endfor %}
+						{% endfor %}
 
-							{% block body %}{% endblock %}
-						</div>
-					</main>
-				</div>
+						{% block body %}{% endblock %}
+					</div>
+				</main>
+			</div>
 
-				{% block javascripts %}
-					
-				{% endblock %}
-			</body>
-		</html>
+			{% block javascripts %}{% endblock %}
+		</body>
+	</html>

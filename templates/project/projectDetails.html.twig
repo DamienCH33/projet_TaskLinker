@@ -61,7 +61,7 @@
 							{% endif %}
 						{% endfor %}
 						{% if is_granted('PROJECT_ADD_TASK', project) %}
-							<a href="{{ path('app_add_task', {id: project.id}) }}" class="task-add">+ Ajouter une tâche</a>
+							<a href="{{ path('app_add_task', {projectId: project.id}) }}" class="task-add">+ Ajouter une tâche</a>
 						{% endif %}
 					</div>
 				</div>

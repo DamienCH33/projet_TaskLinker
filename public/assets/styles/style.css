@@ -369,7 +369,7 @@ table#team-container tr td {
     color: #202020;
 }
 
-table#team-container tbody tr td:last-child {
+table#team-container tbody tr td.actions {
     display: flex;
     align-items: center;
     gap: 35px;
@@ -693,13 +693,3 @@ div#current-user .avatar {
 
 .alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
 .alert-danger { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-
-
-.admin-column {
-    width: 150px;/
-
-}
-
-.admin-column:not(:has(a)) {
-    visibility: hidden;
-}

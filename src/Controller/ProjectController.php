@@ -11,9 +11,29 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[Route('/projet')]
 final class ProjectController extends AbstractController
 {
-    #[Route('/project/{id}', name: 'app_detail_project', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[Route('', name: 'app_projet')]
+    #[IsGranted('ROLE_USER')]
+    /**
+     * list: fonction affichant la homepage sur l'onglet project
+     *
+     * @param  mixed $em
+     * @return Response
+     */
+    public function list(EntityManagerInterface $em): Response
+    {
+        $user = $this->getUser();
+
+        $projects = $em->getRepository(Project::class)->findAccessibleProjects($user);
+
+        return $this->render('index.html.twig', [
+            'projects' => $projects,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'app_detail_project', requirements: ['id' => '\d+'], methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
     /**
      * showDetailProject sert à montrer le contenue du projet selectionné
@@ -39,7 +59,7 @@ final class ProjectController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/project/add', name: 'app_add_project', methods: ['GET', 'POST'])]
+    #[Route(path: '/ajouter', name: 'app_add_project', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
     /**
      * addNewProject sert à ajouter/creer un nouveau projet
@@ -70,7 +90,7 @@ final class ProjectController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-    #[Route(path: '/project/edit/{id}', name: 'app_edit_project', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/modifier', name: 'app_edit_project', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
     /**
      * editProject sert à modifier un projet existant
@@ -95,14 +115,14 @@ final class ProjectController extends AbstractController
             $this->addFlash('success', "La modification de votre projet a bien été prise en compte.");
             return $this->redirectToRoute('app_detail_project', ['id' => $project->getId()]);
         }
-        
+
         return $this->render('project/editProject.html.twig', [
             'form' => $form->createView(),
             'project' => $project,
         ]);
     }
 
-    #[Route('/project/{id}/archive', name: 'app_archive_project', methods: ['GET'])]
+    #[Route('/{id}/archiver', name: 'app_archive_project', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
     /**
      * archive fonction qui sert à archiver un projet

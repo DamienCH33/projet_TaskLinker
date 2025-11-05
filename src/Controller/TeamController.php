@@ -11,16 +11,17 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[Route('/equipe')]
 final class TeamController extends AbstractController
 {
-    #[Route('/team', name: 'app_team', methods: ['GET'])]    
+    #[Route('', name: 'app_team', methods: ['GET'])]
     /**
      * index Permet l'affichage de l'onglet équipe 
      *
      * @param  mixed $em
      * @return Response
      */
-    public function index(EntityManagerInterface $em): Response
+    public function list(EntityManagerInterface $em): Response
     {
 
         $team = $em->getRepository(Employee::class)->findAll();
@@ -30,8 +31,8 @@ final class TeamController extends AbstractController
         ]);
     }
 
-    #[Route('/team/{id}/delete', name: 'app_delete_team',  requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]  
-    #[IsGranted('ROLE_ADMIN')]  
+    #[Route('/{id}/supprimer', name: 'app_delete_team',  requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     /**
      * deleteTeamMember Permet la suppression d'un membre de l'équipe
      *
@@ -58,8 +59,8 @@ final class TeamController extends AbstractController
         return $this->redirectToRoute('app_team');
     }
 
-    #[Route(path: '/team/edit/{id}', name: 'app_edit_team', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])] 
-    #[IsGranted('ROLE_ADMIN')]   
+    #[Route(path: '/{id}/modifier', name: 'app_edit_team', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     /**
      * editTeamMember Permet la modification du profil du membre
      *
@@ -75,6 +76,8 @@ final class TeamController extends AbstractController
             throw $this->createNotFoundException("Cet employé n'existe pas");
         }
 
+        $initialTitle = trim($team->getFirstName() . ' ' . $team->getLastName());
+
         $form = $this->createForm(TeamType::class, $team);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -84,6 +87,7 @@ final class TeamController extends AbstractController
         }
         return $this->render('team/editTeam.html.twig', [
             'form' => $form->createView(),
+            'initialTitle' => $initialTitle,
             'employee' => $team,
         ]);
     }

@@ -19,6 +19,9 @@ class ProjectType extends AbstractType
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Titre du projet',
+                'attr' => [
+                    'placeholder' => 'Ex : TaskLinker',
+                ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez saisir un titre de projet',

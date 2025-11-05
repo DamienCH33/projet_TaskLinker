@@ -1,58 +1,57 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créer une tâche - TaskLinker{% endblock %}
+{% block title %}Créer une tâche - TaskLinker
+{% endblock %}
 
 {% block header %}
 
-
-
-            <div id="title-page">
-                <h1>Créer une tâche</h1>
-            </div>
+	<div id="title-page">
+		<h1>Créer une tâche</h1>
+	</div>
 
 {% endblock %}
 
 {% block body %}
-    <div id="content">
-        <section id="add">
-            <a href="{{ path('app_detail_project', {id: project.id}) }}" class="btn-return">Retour</a>
+	<div id="content">
+		<section id="add">
+			<a href="{{ path('app_detail_project', {id: project.id}) }}" class="btn-return">Retour</a>
 
-            {{ form_start(form, {'attr': {'name': 'task'}}) }}
+			{{ form_start(form, {'attr': {'name': 'task'}}) }}
 
-            <div>
-                <label for="{{ form.title.vars.id }}" class="required">Titre de la tâche</label>
-                {{ form_widget(form.title, {'attr': {'id': form.title.vars.id, 'required': true}}) }}
-                {{ form_errors(form.title) }}
-            </div>
+			<div>
+				<label for="{{ form.title.vars.id }}" class="required">Titre de la tâche</label>
+				{{ form_widget(form.title, {'attr': {'id': form.title.vars.id, 'required': true}}) }}
+				{{ form_errors(form.title) }}
+			</div>
 
-            <div>
-                <label for="{{ form.description.vars.id }}" class="required">Description</label>
-                {{ form_widget(form.description, {'attr': {'id': form.description.vars.id, 'required': true}}) }}
-                {{ form_errors(form.description) }}
-            </div>
+			<div>
+				<label for="{{ form.description.vars.id }}" class="required">Description</label>
+				{{ form_widget(form.description, {'attr': {'id': form.description.vars.id, 'required': true}}) }}
+				{{ form_errors(form.description) }}
+			</div>
 
-            <div>
-                <label for="{{ form.deadline.vars.id }}" class="required">Date</label>
-                {{ form_widget(form.deadline, {'attr': {'id': form.deadline.vars.id, 'required': true}}) }}
-                {{ form_errors(form.deadline) }}
-            </div>
+			<div>
+				<label for="{{ form.deadline.vars.id }}" class="required">Date</label>
+				{{ form_widget(form.deadline, {'attr': {'id': form.deadline.vars.id, 'required': true}}) }}
+				{{ form_errors(form.deadline) }}
+			</div>
 
-            <div>
-                <label for="{{ form.status.vars.id }}" class="required">Statut</label>
-                {{ form_widget(form.status, {'attr': {'id': form.status.vars.id, 'required': true}}) }}
-                {{ form_errors(form.status) }}
-            </div>
+			<div>
+				<label for="{{ form.status.vars.id }}" class="required">Statut</label>
+				{{ form_widget(form.status, {'attr': {'id': form.status.vars.id, 'required': true}}) }}
+				{{ form_errors(form.status) }}
+			</div>
 
-            <div class="input">
-                <label for="{{ form.employees.vars.id }}">Membres</label>
-                {{ form_widget(form.employees) }}
-                {{ form_errors(form.employees) }}
-            </div>
+			<div class="input">
+				<label for="{{ form.employees.vars.id }}">Membres</label>
+				{{ form_widget(form.employees) }}
+				{{ form_errors(form.employees) }}
+			</div>
 
-            <br>
-            <button class="button button-submit">Ajouter</button>
+			<br>
+			<button class="button button-submit">Ajouter</button>
 
-            {{ form_end(form) }}
-        </section>
-    </div>
+			{{ form_end(form) }}
+		</section>
+	</div>
 {% endblock %}

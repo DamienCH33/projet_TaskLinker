@@ -15,23 +15,18 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class TasksController extends AbstractController
 {
-    #[Route(path: '/project/{id}/task/add', name: 'app_add_task', methods: ['GET', 'POST'])]
+    #[Route(path: '/project/{projectId}/task/ajouter', name: 'app_add_task', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
     /**
      * addNewTask permet d'ajouter/créer une nouvelle tâche au projet
      *
      * @param  mixed $request
-     * @param  mixed $id
+     * @param  Project $project
      * @param  mixed $em
      * @return Response
      */
-    public function addNewTask(Request $request, int $id, EntityManagerInterface $em): Response
+    public function addNewTask(Request $request, #[MapEntity(id: 'projectId')] Project $project, EntityManagerInterface $em): Response
     {
-        $project = $em->getRepository(Project::class)->find($id);
-        if (!$project) {
-            throw $this->createNotFoundException("Ce projet n'existe pas.");
-        }
-
         $this->denyAccessUnlessGranted('PROJECT_ADD_TASK', $project);
 
         $newTask = new Task();
@@ -57,7 +52,7 @@ final class TasksController extends AbstractController
         ]);
     }
     #[Route(
-        path: '/project/{projectId}/task/{taskId}/edit',
+        path: '/project/{projectId}/task/{taskId}/modifier',
         name: 'app_edit_task',
         requirements: ['projectId' => '\d+', 'taskId' => '\d+'],
         methods: ['GET', 'POST']
@@ -100,7 +95,7 @@ final class TasksController extends AbstractController
         ]);
     }
     #[Route(
-        path: '/project/{projectId}/task/{taskId}/delete',
+        path: '/project/{projectId}/task/{taskId}/supprimer',
         name: 'app_delete_task',
         requirements: ['projectId' => '\d+', 'taskId' => '\d+'],
         methods: ['POST']

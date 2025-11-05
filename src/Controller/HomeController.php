@@ -11,7 +11,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class HomeController extends AbstractController
 {
-    #[Route('/', name: 'app_home')]    
+    #[Route('/', name: 'app_home')]
     #[IsGranted('ROLE_USER')]
     /**
      * index fonction affichant la homepage sur l'onglet project

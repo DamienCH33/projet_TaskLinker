@@ -22,12 +22,18 @@ class TaskType extends AbstractType
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Titre de la tâche',
+                'attr' => [
+                    'placeholder' => 'Ex : Concevoir la base de données',
+                ],
                 'constraints' => [
                     new NotBlank(['message' => 'Le titre est obligatoire.']),
                 ],
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
+                'attr' => [
+                    'placeholder' => 'Décrire la tâche à réaliser',
+                ],
                 'constraints' => [
                     new NotBlank(['message' => 'La description est obligatoire.']),
                 ],

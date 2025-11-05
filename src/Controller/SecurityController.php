@@ -14,7 +14,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 final class SecurityController extends AbstractController
 {
-    #[Route('/welcome', name: 'app_welcome', methods: ['GET'])]
+    #[Route('/bienvenue', name: 'app_welcome', methods: ['GET'])]
     public function welcome(): Response
     {
         if ($this->getUser()) {
@@ -23,7 +23,7 @@ final class SecurityController extends AbstractController
         return $this->render('log/welcome.html.twig');
     }
 
-    #[Route('/register', name: 'app_registration', methods: ['GET', 'POST'])]
+    #[Route('/inscription', name: 'app_registration', methods: ['GET', 'POST'])]
     public function registration(Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $em): Response
     {
         $employee = new Employee();
@@ -53,7 +53,7 @@ final class SecurityController extends AbstractController
         ]);
     }
 
-    #[Route('/login', name: 'app_login', methods: ['GET', 'POST'])]
+    #[Route('/connexion', name: 'app_login', methods: ['GET', 'POST'])]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -65,7 +65,7 @@ final class SecurityController extends AbstractController
         ]);
     }
 
-    #[Route('/logout', name: 'app_logout')]
+    #[Route('/deconnexion', name: 'app_logout')]
     public function logout(): void
     {
         throw new \LogicException('This method is intercepted by the logout key on your firewall.');
