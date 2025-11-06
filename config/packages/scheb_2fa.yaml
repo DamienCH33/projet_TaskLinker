@@ -1,0 +1,9 @@
+#scheb_two_factor:
+    #security_tokens:
+        #- Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
+    #google:
+        #enabled: true
+        #server_name: 'TaskLinker'
+        #issuer: 'TaskLinker'
+        #digits: 6
+        #window: 1

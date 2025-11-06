@@ -1,0 +1,10 @@
+{% extends 'log/base-logout.html.twig' %}
+
+{% block body %}
+    <h1>Erreur 500</h1>
+
+    <p>Une erreur s’est produite.</p>
+    <p> Veuillez réessayer plus tard.</p>     
+    <p><a href="{{ path('app_home') }}">Retournez à la page d'accueil</a>.</p>
+    
+{% endblock %}

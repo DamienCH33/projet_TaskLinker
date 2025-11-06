@@ -11,11 +11,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 
 #[ORM\Entity(repositoryClass: EmployeeRepository::class)]
 #[UniqueEntity('email')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-class Employee implements UserInterface, PasswordAuthenticatedUserInterface
+class Employee implements UserInterface, PasswordAuthenticatedUserInterface /*, TwoFactorInterface*/
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -42,6 +43,27 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column(type: Types::JSON, nullable: false)]
     private array $roles = [];
+
+    // Two-Factor Authentication with Google Authenticator
+   /* #[ORM\Column(length: 255, type: Types::STRING, nullable: true)]
+    private ?string $googleAuthenticatorSecret = null;
+
+    public function isGoogleAuthenticatorEnabled(): bool
+    {
+        return $this->googleAuthenticatorSecret !== null;
+    }
+    public function getGoogleAuthenticatorSecret(): ?string
+    {
+        return $this->googleAuthenticatorSecret;
+    }
+    public function setGoogleAuthenticatorSecret(?string $secret): void
+    {
+        $this->googleAuthenticatorSecret = $secret;
+    }
+    public function getGoogleAuthenticatorUsername(): string
+    {
+        return (string)$this->email;
+    }*/
 
     /**
      * @var string The hashed password

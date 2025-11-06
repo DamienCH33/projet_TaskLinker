@@ -1,0 +1,9 @@
+{% extends 'log/base-logout.html.twig' %}
+
+{% block body %}
+    <h1>Erreur 404 <br>Page introuvable</h1>
+
+    <p>La page demandée est introuvable.</p> 
+    <p>Elle a peut-être été déplacée ou supprimée.</p>
+    <p>Vérifiez l'orthographe de l'URL ou <a href="{{ path('app_home') }}">Retournez à la page d'accueil</a>.</p>
+{% endblock %}
