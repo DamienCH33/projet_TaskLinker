@@ -15,7 +15,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class ProjectController extends AbstractController
 {
     #[Route('', name: 'app_projet')]
-    #[IsGranted('ROLE_USER')]
     /**
      * list: fonction affichant la homepage sur l'onglet project
      *
@@ -34,7 +33,7 @@ final class ProjectController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_detail_project', requirements: ['id' => '\d+'], methods: ['GET'])]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted('ROLE_ADMIN')]
     /**
      * showDetailProject sert à montrer le contenue du projet selectionné
      *
@@ -50,8 +49,6 @@ final class ProjectController extends AbstractController
             $this->addFlash('danger', "Ce projet n'existe pas.");
             return $this->redirectToRoute('app_home');
         }
-
-        $this->denyAccessUnlessGranted('PROJECT_VIEW', $project);
 
         return $this->render('project/projectDetails.html.twig', [
             'project' => $project,
@@ -90,6 +87,7 @@ final class ProjectController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    
     #[Route(path: '/{id}/modifier', name: 'app_edit_project', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
     /**

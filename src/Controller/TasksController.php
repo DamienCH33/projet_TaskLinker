@@ -27,7 +27,6 @@ final class TasksController extends AbstractController
      */
     public function addNewTask(Request $request, #[MapEntity(id: 'projectId')] Project $project, EntityManagerInterface $em): Response
     {
-        $this->denyAccessUnlessGranted('PROJECT_ADD_TASK', $project);
 
         $newTask = new Task();
         $newTask->setProject($project);
@@ -57,6 +56,7 @@ final class TasksController extends AbstractController
         requirements: ['projectId' => '\d+', 'taskId' => '\d+'],
         methods: ['GET', 'POST']
     )]
+    #[IsGranted('ROLE_ADMIN')]
     /**
      * editTask Permet de modifier les tâches d'un projet
      *
@@ -71,12 +71,6 @@ final class TasksController extends AbstractController
         if (!$task) {
             $this->addFlash('danger', "Cette tâche n'existe pas.");
             return $this->redirectToRoute('app_home');
-        }
-
-        $user = $this->getUser();
-        if (!in_array('ROLE_ADMIN', $user->getRoles(), true)) {
-            $this->addFlash('danger', "Vous n'avez pas le droit d'accéder à cette tâche.");
-            return $this->redirectToRoute('app_detail_project', ['id' => $project->getId()]);
         }
 
         $form = $this->createForm(TaskType::class, $task);
@@ -115,8 +109,6 @@ final class TasksController extends AbstractController
             $this->addFlash('danger', "Cette tâche n'existe pas.");
             return $this->redirectToRoute('app_detail_project', ['id' => $project->getId()]);
         }
-
-        $this->denyAccessUnlessGranted('PROJECT_EDIT', $project);
 
         $em->remove($task);
         $em->flush();

@@ -12,7 +12,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    #[IsGranted('ROLE_USER')]
     /**
      * index fonction affichant la homepage sur l'onglet project
      *
@@ -22,6 +21,10 @@ final class HomeController extends AbstractController
     public function index(EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
+
+        if (!$user){
+            return $this->render('log/welcome.html.twig');
+        }
 
         $projects = $em->getRepository(Project::class)->findAccessibleProjects($user);
 

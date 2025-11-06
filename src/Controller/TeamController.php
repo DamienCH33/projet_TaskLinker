@@ -15,6 +15,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class TeamController extends AbstractController
 {
     #[Route('', name: 'app_team', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     /**
      * index Permet l'affichage de l'onglet équipe 
      *

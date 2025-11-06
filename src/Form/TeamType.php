@@ -95,10 +95,6 @@ class TeamType extends AbstractType
                 ],
                 'constraints' => [
                     new NotBlank(['message' => 'La date d\'entrée est obligatoire.']),
-                    new LessThanOrEqual([
-                        'value' => 'today',
-                        'message' => 'La date d’entrée ne peut pas être dans le futur.',
-                    ]),
                 ],
             ]);
     }
