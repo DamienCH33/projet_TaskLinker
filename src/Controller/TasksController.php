@@ -70,7 +70,7 @@ final class TasksController extends AbstractController
     {
         if (!$task) {
             $this->addFlash('danger', "Cette tâche n'existe pas.");
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_project', ['id' => $project->getId()]);
         }
 
         $form = $this->createForm(TaskType::class, $task);

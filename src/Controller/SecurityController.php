@@ -14,6 +14,15 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 final class SecurityController extends AbstractController
 {
+    #[Route('/bienvenue', name: 'app_welcome', methods: ['GET'])]
+    public function welcome(): Response
+    {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_projet');
+        }
+        return $this->render('log/welcome.html.twig');
+    }
+
     #[Route('/inscription', name: 'app_registration', methods: ['GET', 'POST'])]
     public function registration(
         Request $request,

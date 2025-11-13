@@ -11,17 +11,17 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/projet')]
+
 final class ProjectController extends AbstractController
 {
-    #[Route('', name: 'app_projet')]
+    #[Route('/', name: 'app_projet')]
     /**
      * list: fonction affichant la homepage sur l'onglet project
      *
      * @param  mixed $em
      * @return Response
      */
-    public function list(EntityManagerInterface $em): Response
+    public function index(EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
 
@@ -33,7 +33,7 @@ final class ProjectController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_detail_project', requirements: ['id' => '\d+'], methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('PROJECT_VIEW', 'project')]
     /**
      * showDetailProject sert à montrer le contenue du projet selectionné
      *
@@ -41,13 +41,13 @@ final class ProjectController extends AbstractController
      * @param  mixed $em
      * @return Response
      */
-    public function showDetailProject(int $id, EntityManagerInterface $em): Response
+    public function showDetailProject(int $id, EntityManagerInterface $em, Project $project): Response
     {
         $project = $em->getRepository(Project::class)->find($id);
 
         if (!$project) {
             $this->addFlash('danger', "Ce projet n'existe pas.");
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_projet');
         }
 
         return $this->render('project/projectDetails.html.twig', [
@@ -87,7 +87,7 @@ final class ProjectController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-    
+
     #[Route(path: '/{id}/modifier', name: 'app_edit_project', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
     /**
@@ -135,6 +135,6 @@ final class ProjectController extends AbstractController
         $em->flush();
 
         $this->addFlash('success', 'Le projet a été archivé avec succès.');
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_projet');
     }
 }
