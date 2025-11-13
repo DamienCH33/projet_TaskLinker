@@ -5,9 +5,16 @@ namespace App\DataFixtures;
 use App\Entity\Employee;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class EmployeeFixtures extends Fixture
 {
+    private UserPasswordHasherInterface $passwordHasher;
+    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    {
+        $this->passwordHasher = $passwordHasher;
+    }
+
     public function load(ObjectManager $manager): void
     {
         $employeesData = [
@@ -42,11 +49,13 @@ class EmployeeFixtures extends Fixture
             $employee->setStartDate($data['startDate']);
             $employee->setStatus($data['status']);
 
+            $hashedPassword = $this->passwordHasher->hashPassword($employee, 'MotDePasse123*');
+            $employee->setPassword($hashedPassword);
+
             $manager->persist($employee);
 
             $this->addReference('employee_' . $index, $employee);
         }
-
         $manager->flush();
     }
 }
