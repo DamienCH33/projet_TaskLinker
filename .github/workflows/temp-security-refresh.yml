@@ -25,7 +25,7 @@ jobs:
       - name: Set up PHP and Composer
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.5"
+          php-version: "8.4"
           extensions: mbstring, intl, pdo_pgsql
           tools: composer:v2
 
